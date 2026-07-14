@@ -778,8 +778,11 @@ async function confirmParticipation() {
     return;
   }
 
-  const btn = event.target;
-  btn.disabled = true; btn.textContent = '⏳ REGISTRANDO...';
+  // ✅ CORRECCIÓN: Buscamos el botón de forma segura sin depender de la variable global 'event'
+  const btn = document.querySelector('#modalOverlay .btn-primary');
+  
+  btn.disabled = true; 
+  btn.textContent = '⏳ REGISTRANDO...';
 
   try {
     await window.addDoc(window.collection(window.db, "participantes"), {
@@ -800,17 +803,25 @@ async function confirmParticipation() {
     
     const successHTML = '<div class="success-msg">🎉 ¡FELICIDADES, ' + name + '!<br>Participas con el N° ' + selectedAnimal.num + ' - ' + selectedAnimal.name + ' ' + selectedAnimal.emoji + '</div>';
     const ticketHTML = '<div class="ticket"><div class="ticket-header"><h3>🎟️ TICKET DEL CASINO</h3><small>Sorteo de los 38 Animales</small></div><div class="ticket-body"><div class="ticket-emoji">' + selectedAnimal.emoji + '</div><div class="ticket-info"><p><strong>Jugador:</strong> ' + name + '</p><p><strong>N° Animal:</strong> ' + selectedAnimal.num + '</p><p><strong>Animal:</strong> ' + selectedAnimal.name + '</p><p><strong>Fecha:</strong> ' + new Date().toLocaleString('es-ES') + '</p><p><strong>ID Ticket:</strong> #' + Date.now().toString(36).toUpperCase() + '</p></div></div></div>';
+    
     document.getElementById('ticketArea').innerHTML = successHTML + ticketHTML;
     applyTwemoji(document.getElementById('ticketArea'));
     
     btn.textContent = '✅ REGISTRADO';
+    
+    // ✅ Ahora este bloque SÍ se ejecutará siempre, cerrando el modal y dejando el grid listo
     setTimeout(function() { 
       closeModal(); 
       renderGrid();
     }, 3500);
+    
   } catch (error) {
     alert("Error al guardar: " + error.message);
-    btn.disabled = false; btn.textContent = '✅ ENVIAR';
+    const btnRetry = document.querySelector('#modalOverlay .btn-primary');
+    if (btnRetry) {
+      btnRetry.disabled = false; 
+      btnRetry.textContent = '✅ ENVIAR';
+    }
   }
 }
 
