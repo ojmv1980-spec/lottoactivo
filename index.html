@@ -4,14 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🎰 Casino de Animalitos - Lotto Activo 🎰</title>
+<!-- Twemoji para renderizar emojis como vectores SVG a todo color en TODOS los dispositivos -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/twemoji.min.js" crossorigin="anonymous"></script>
+<!-- html2canvas para generar las imágenes de los tickets -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: 
-      radial-gradient(ellipse at top, #1a0a2e 0%, #0d0015 100%),
-      #0d0015;
+    background: radial-gradient(ellipse at top, #1a0a2e 0%, #0d0015 100%);
     min-height: 100vh;
     padding: 15px;
     font-family: 'Georgia', 'Times New Roman', serif;
@@ -20,64 +22,38 @@
     color: #fff;
   }
 
+  /* Ajuste para que los SVG de Twemoji se alineen perfectamente */
+  img.emoji {
+    height: 1em;
+    width: 1em;
+    margin: 0 .05em 0 .1em;
+    vertical-align: -0.1em;
+  }
+
   body::before {
     content: '';
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: 
-      repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 50px,
-        rgba(255, 215, 0, 0.03) 50px,
-        rgba(255, 215, 0, 0.03) 51px
-      );
+    background: repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(255, 215, 0, 0.03) 50px, rgba(255, 215, 0, 0.03) 51px);
     pointer-events: none;
     z-index: 0;
   }
 
   .casino-lights {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 8px;
-    background: repeating-linear-gradient(
-      90deg,
-      #ff0000 0px, #ff0000 20px,
-      #ffd700 20px, #ffd700 40px,
-      #00ff00 40px, #00ff00 60px,
-      #0000ff 60px, #0000ff 80px
-    );
-    animation: lightsBlink 1s infinite;
-    z-index: 100;
+    position: fixed; top: 0; left: 0; right: 0; height: 8px;
+    background: repeating-linear-gradient(90deg, #ff0000 0px, #ff0000 20px, #ffd700 20px, #ffd700 40px, #00ff00 40px, #00ff00 60px, #0000ff 60px, #0000ff 80px);
+    animation: lightsBlink 1s infinite; z-index: 100;
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
   }
-
   .casino-lights-bottom {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 8px;
-    background: repeating-linear-gradient(
-      90deg,
-      #ff0000 0px, #ff0000 20px,
-      #ffd700 20px, #ffd700 40px,
-      #00ff00 40px, #00ff00 60px,
-      #0000ff 60px, #0000ff 80px
-    );
-    animation: lightsBlink 1s infinite;
-    z-index: 100;
+    position: fixed; bottom: 0; left: 0; right: 0; height: 8px;
+    background: repeating-linear-gradient(90deg, #ff0000 0px, #ff0000 20px, #ffd700 20px, #ffd700 40px, #00ff00 40px, #00ff00 60px, #0000ff 60px, #0000ff 80px);
+    animation: lightsBlink 1s infinite; z-index: 100;
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
   }
+  @keyframes lightsBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-  @keyframes lightsBlink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
-  }
-
-  /* Link Admin - ahora en el flujo normal, alineado a la derecha */
+  /* Link Admin y Botón PANEL: Arriba a la derecha, antes del título */
   .admin-link {
     display: block;
     text-align: right;
@@ -92,12 +68,8 @@
     position: relative;
     z-index: 1;
   }
+  .admin-link:hover { color: rgba(255, 215, 0, 0.6); }
 
-  .admin-link:hover {
-    color: rgba(255, 215, 0, 0.6);
-  }
-
-  /* Botón PANEL - ahora en el flujo normal, alineado a la derecha */
   .admin-panel-btn {
     display: none;
     float: right;
@@ -118,11 +90,7 @@
     position: relative;
     z-index: 1;
   }
-
-  .admin-panel-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
-  }
+  .admin-panel-btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
 
   .title-container {
     text-align: center;
@@ -135,10 +103,7 @@
   h1 {
     font-size: 1.6em;
     color: #ffd700;
-    text-shadow: 
-      0 0 10px #ffd700,
-      0 0 20px #ff8c00,
-      3px 3px 0 #8b0000;
+    text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00, 3px 3px 0 #8b0000;
     letter-spacing: 2px;
     font-weight: bold;
     animation: neonPulse 2s ease-in-out infinite;
@@ -148,10 +113,7 @@
   .title-line-2 {
     font-size: 1.4em;
     color: #ffd700;
-    text-shadow: 
-      0 0 10px #ffd700,
-      0 0 20px #ff8c00,
-      3px 3px 0 #8b0000;
+    text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00, 3px 3px 0 #8b0000;
     letter-spacing: 3px;
     font-weight: bold;
     animation: neonPulse 2s ease-in-out infinite;
@@ -160,19 +122,8 @@
   }
 
   @keyframes neonPulse {
-    0%, 100% { 
-      text-shadow: 
-        0 0 10px #ffd700,
-        0 0 20px #ff8c00,
-        3px 3px 0 #8b0000;
-    }
-    50% { 
-      text-shadow: 
-        0 0 20px #ffd700,
-        0 0 40px #ff8c00,
-        0 0 60px #ff4500,
-        3px 3px 0 #8b0000;
-    }
+    0%, 100% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00, 3px 3px 0 #8b0000; }
+    50% { text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c00, 0 0 60px #ff4500, 3px 3px 0 #8b0000; }
   }
 
   .subtitle {
@@ -205,17 +156,8 @@
     z-index: 1;
   }
 
-  .top-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-
-  .row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
+  .top-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 
   .animal-card {
     background: linear-gradient(145deg, #8b0000 0%, #4a0000 50%, #2d0000 100%);
@@ -227,41 +169,26 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    box-shadow: 
-      0 0 15px rgba(255, 215, 0, 0.3),
-      inset 0 0 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5);
   }
 
   .animal-card::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(
-      135deg,
-      transparent 40%,
-      rgba(255, 215, 0, 0.1) 50%,
-      transparent 60%
-    );
+    background: linear-gradient(135deg, transparent 40%, rgba(255, 215, 0, 0.1) 50%, transparent 60%);
     animation: shine 3s infinite;
   }
 
-  @keyframes shine {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
+  @keyframes shine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
   .animal-card:hover:not(.taken) {
     transform: translateY(-5px) scale(1.03);
-    box-shadow: 
-      0 0 30px rgba(255, 215, 0, 0.6),
-      0 0 60px rgba(255, 215, 0, 0.3),
-      inset 0 0 20px rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 0 60px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.2);
     border-color: #fff;
   }
 
-  .animal-card:active:not(.taken) {
-    transform: translateY(2px) scale(0.98);
-  }
+  .animal-card:active:not(.taken) { transform: translateY(2px) scale(0.98); }
 
   .animal-card.taken {
     background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
@@ -271,53 +198,16 @@
     filter: grayscale(100%);
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
   }
-
   .animal-card.taken:hover { transform: none; }
 
-  .animal-emoji {
-    font-size: 2.8em;
-    display: block;
-    margin-bottom: 4px;
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
-    position: relative;
-    z-index: 1;
-  }
-
-  .animal-number {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #ffd700;
-    text-shadow: 
-      0 0 10px rgba(255, 215, 0, 0.8),
-      2px 2px 0 #000;
-    position: relative;
-    z-index: 1;
-    font-family: 'Georgia', serif;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .animal-name {
-    font-size: 0.78em;
-    color: #fff;
-    font-weight: bold;
-    text-shadow: 1px 1px 0 #000;
-    position: relative;
-    z-index: 1;
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: -0.3px;
-    white-space: nowrap;
-    display: block;
-    width: 100%;
-    line-height: 1.1;
-  }
+  .animal-emoji { font-size: 2.8em; display: block; margin-bottom: 4px; filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); position: relative; z-index: 1; }
+  .animal-number { font-size: 1.8em; font-weight: bold; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 2px 2px 0 #000; position: relative; z-index: 1; font-family: 'Georgia', serif; line-height: 1; margin-bottom: 4px; }
+  .animal-name { font-size: 0.78em; color: #fff; font-weight: bold; text-shadow: 1px 1px 0 #000; position: relative; z-index: 1; text-transform: uppercase; text-align: center; letter-spacing: -0.3px; white-space: nowrap; display: block; width: 100%; line-height: 1.1; }
 
   .taken-label {
     display: none;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%) rotate(-15deg);
     background: linear-gradient(145deg, #000, #333);
     color: #ff0000;
@@ -332,28 +222,10 @@
     text-shadow: 0 0 10px #ff0000;
     letter-spacing: 2px;
   }
+  .animal-card.taken .taken-label { display: block; animation: stamp 0.3s ease; }
+  @keyframes stamp { 0% { transform: translate(-50%, -50%) rotate(-15deg) scale(2); opacity: 0; } 100% { transform: translate(-50%, -50%) rotate(-15deg) scale(1); opacity: 1; } }
 
-  .animal-card.taken .taken-label {
-    display: block;
-    animation: stamp 0.3s ease;
-  }
-
-  @keyframes stamp {
-    0% { transform: translate(-50%, -50%) rotate(-15deg) scale(2); opacity: 0; }
-    100% { transform: translate(-50%, -50%) rotate(-15deg) scale(1); opacity: 1; }
-  }
-
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-  }
-
+  .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 1000; justify-content: center; align-items: center; }
   .modal-overlay.active { display: flex; }
 
   .modal {
@@ -365,120 +237,31 @@
     width: 90%;
     text-align: center;
     animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    box-shadow: 
-      0 0 40px rgba(255, 215, 0, 0.5),
-      0 0 80px rgba(255, 215, 0, 0.2),
-      inset 0 0 40px rgba(255, 215, 0, 0.1);
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(255, 215, 0, 0.2), inset 0 0 40px rgba(255, 215, 0, 0.1);
     position: relative;
   }
+  .modal::before { content: '🎰'; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); font-size: 3.5em; filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
+  @keyframes popIn { from { transform: scale(0.3) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
 
-  .modal::before {
-    content: '🎰';
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 3.5em;
-    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
-  }
-
-  @keyframes popIn {
-    from { transform: scale(0.3) rotate(-10deg); opacity: 0; }
-    to { transform: scale(1) rotate(0); opacity: 1; }
-  }
-
-  .modal h2 {
-    color: #ffd700;
-    margin-bottom: 15px;
-    font-size: 1.8em;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-    margin-top: 10px;
-    letter-spacing: 2px;
-  }
-
-  .modal .preview-emoji {
-    font-size: 6em;
-    margin: 15px 0;
-    filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
-    animation: wiggle 2s ease-in-out infinite;
-  }
-
-  @keyframes wiggle {
-    0%, 100% { transform: rotate(-5deg) scale(1); }
-    50% { transform: rotate(5deg) scale(1.1); }
-  }
-
-  .modal #previewText {
-    font-size: 1.3em;
-    color: #ffd700;
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-    margin-bottom: 15px;
-  }
+  .modal h2 { color: #ffd700; margin-bottom: 15px; font-size: 1.8em; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); margin-top: 10px; letter-spacing: 2px; }
+  .modal .preview-emoji { font-size: 6em; margin: 15px 0; filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8)); animation: wiggle 2s ease-in-out infinite; }
+  @keyframes wiggle { 0%, 100% { transform: rotate(-5deg) scale(1); } 50% { transform: rotate(5deg) scale(1.1); } }
+  .modal #previewText { font-size: 1.3em; color: #ffd700; font-weight: bold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); margin-bottom: 15px; }
 
   .modal input {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.2em;
-    border: 3px solid #ffd700;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.6);
-    color: #ffd700;
-    margin: 15px 0;
-    text-align: center;
-    font-family: 'Georgia', serif;
-    font-weight: bold;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    width: 100%; padding: 15px; font-size: 1.2em; border: 3px solid #ffd700; border-radius: 10px;
+    background: rgba(0, 0, 0, 0.6); color: #ffd700; margin: 15px 0; text-align: center;
+    font-family: 'Georgia', serif; font-weight: bold; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
   }
-
   .modal input::placeholder { color: #888; font-style: italic; }
+  .modal input:focus { outline: none; border-color: #fff; box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), inset 0 0 20px rgba(255, 215, 0, 0.2); }
 
-  .modal input:focus {
-    outline: none;
-    border-color: #fff;
-    box-shadow: 
-      0 0 20px rgba(255, 215, 0, 0.8),
-      inset 0 0 20px rgba(255, 215, 0, 0.2);
-  }
-
-  .btn {
-    padding: 15px 35px;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    margin: 8px;
-    font-weight: bold;
-    font-family: 'Georgia', serif;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
-
+  .btn { padding: 15px 35px; font-size: 1.2em; border: none; border-radius: 10px; cursor: pointer; margin: 8px; font-weight: bold; font-family: 'Georgia', serif; transition: all 0.2s; text-transform: uppercase; letter-spacing: 2px; }
   .btn:active { transform: translateY(4px); }
-
-  .btn-primary {
-    background: linear-gradient(145deg, #ffd700 0%, #ff8c00 100%);
-    color: #000;
-    border: 3px solid #fff;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.9);
-  }
-
-  .btn-secondary {
-    background: linear-gradient(145deg, #333 0%, #111 100%);
-    color: #fff;
-    border: 3px solid #666;
-  }
-
-  .btn-secondary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  }
+  .btn-primary { background: linear-gradient(145deg, #ffd700 0%, #ff8c00 100%); color: #000; border: 3px solid #fff; box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 40px rgba(255, 215, 0, 0.9); }
+  .btn-secondary { background: linear-gradient(145deg, #333 0%, #111 100%); color: #fff; border: 3px solid #666; }
+  .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
 
   .ticket {
     background: linear-gradient(145deg, #1a0a2e 0%, #2d1b4e 100%);
@@ -489,55 +272,17 @@
     margin-top: 20px;
     text-align: left;
     position: relative;
-    box-shadow: 
-      0 0 30px rgba(255, 215, 0, 0.4),
-      inset 0 0 30px rgba(255, 215, 0, 0.1);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), inset 0 0 30px rgba(255, 215, 0, 0.1);
   }
-
-  .ticket::before, .ticket::after {
-    content: '🎰';
-    position: absolute;
-    font-size: 2em;
-    top: -15px;
-  }
-
-  .ticket::before { left: 30px; }
-  .ticket::after { right: 30px; }
-
-  .ticket-header {
-    text-align: center;
-    border-bottom: 2px dashed #ffd700;
-    padding-bottom: 12px;
-    margin-bottom: 15px;
-  }
-
-  .ticket-header h3 {
-    color: #ffd700;
-    font-size: 1.6em;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-    letter-spacing: 3px;
-  }
-
-  .ticket-header small {
-    color: #ccc;
-    font-size: 1em;
-  }
-
-  .ticket-body {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-  }
-
-  .ticket-emoji { 
-    font-size: 5em; 
-    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); 
-  }
-
+  .ticket::before, .ticket::after { content: '🎰'; position: absolute; font-size: 2em; top: -15px; }
+  .ticket::before { left: 30px; } .ticket::after { right: 30px; }
+  .ticket-header { text-align: center; border-bottom: 2px dashed #ffd700; padding-bottom: 12px; margin-bottom: 15px; }
+  .ticket-header h3 { color: #ffd700; font-size: 1.6em; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); letter-spacing: 3px; }
+  .ticket-header small { color: #ccc; font-size: 1em; }
+  .ticket-body { display: flex; gap: 20px; align-items: center; }
+  .ticket-emoji { font-size: 5em; filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
   .ticket-info { flex: 1; font-size: 1em; }
-
   .ticket-info p { margin: 6px 0; color: #fff; }
-
   .ticket-info strong { color: #ffd700; }
 
   .success-msg {
@@ -563,23 +308,21 @@
     position: relative;
     z-index: 1;
   }
-
-  .stats h3 {
-    color: #ffd700;
-    margin-bottom: 15px;
-    text-align: center;
-    font-size: 1.6em;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-    margin-top: 10px;
-    letter-spacing: 2px;
-  }
-
+  .stats h3 { color: #ffd700; margin-bottom: 15px; text-align: center; font-size: 1.6em; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); margin-top: 10px; letter-spacing: 2px; }
+  
+  /* OBSERVACIÓN: Lista crece natural en celular, con scroll solo en PC */
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 12px;
-    max-height: 250px;
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
+  }
+  @media (min-width: 768px) {
+    .stats-grid {
+      max-height: 300px;
+      overflow-y: auto;
+    }
   }
 
   .stat-item {
@@ -593,19 +336,14 @@
     color: #fff;
   }
 
-  /* Panel Admin */
   .admin-panel {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0; width: 100%; height: 100%;
     background: linear-gradient(135deg, #0d0015 0%, #1a0a2e 100%);
     z-index: 2000;
     overflow-y: auto;
   }
-
   .admin-panel.active { display: block; }
 
   .admin-header {
@@ -616,17 +354,11 @@
     box-shadow: 0 5px 20px rgba(0,0,0,0.5);
     position: relative;
   }
-
-  .admin-header h2 {
-    color: #ffd700;
-    font-size: 2em;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-  }
+  .admin-header h2 { color: #ffd700; font-size: 2em; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
 
   .btn-home {
     position: absolute;
-    top: 50%;
-    right: 20px;
+    top: 50%; right: 20px;
     transform: translateY(-50%);
     background: linear-gradient(145deg, #ffd700 0%, #ff8c00 100%);
     color: #000;
@@ -641,84 +373,20 @@
     text-transform: uppercase;
     letter-spacing: 1px;
   }
+  .btn-home:hover { transform: translateY(-50%) translateY(-3px); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
 
-  .btn-home:hover {
-    transform: translateY(-50%) translateY(-3px);
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-  }
+  .admin-tabs { display: flex; justify-content: center; gap: 10px; padding: 20px; background: rgba(0,0,0,0.3); flex-wrap: wrap; }
+  .tab-btn { padding: 12px 25px; background: linear-gradient(145deg, #2d0000, #1a0000); border: 2px solid #ffd700; color: #ffd700; border-radius: 10px; cursor: pointer; font-weight: bold; transition: all 0.3s; font-size: 1em; font-family: 'Georgia', serif; }
+  .tab-btn:hover { background: linear-gradient(145deg, #4a0000, #2d0000); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4); }
+  .tab-btn.active { background: linear-gradient(145deg, #ffd700, #ff8c00); color: #000; border-color: #fff; }
 
-  .admin-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding: 20px;
-    background: rgba(0,0,0,0.3);
-    flex-wrap: wrap;
-  }
-
-  .tab-btn {
-    padding: 12px 25px;
-    background: linear-gradient(145deg, #2d0000, #1a0000);
-    border: 2px solid #ffd700;
-    color: #ffd700;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s;
-    font-size: 1em;
-    font-family: 'Georgia', serif;
-  }
-
-  .tab-btn:hover {
-    background: linear-gradient(145deg, #4a0000, #2d0000);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
-  }
-
-  .tab-btn.active {
-    background: linear-gradient(145deg, #ffd700, #ff8c00);
-    color: #000;
-    border-color: #fff;
-  }
-
-  .tab-content {
-    display: none;
-    padding: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
+  .tab-content { display: none; padding: 30px; max-width: 1200px; margin: 0 auto; }
   .tab-content.active { display: block; }
 
-  .form-group {
-    margin-bottom: 25px;
-  }
-
-  .form-group label {
-    display: block;
-    color: #ffd700;
-    font-weight: bold;
-    margin-bottom: 8px;
-    font-size: 1.1em;
-  }
-
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    width: 100%;
-    padding: 12px;
-    background: rgba(0,0,0,0.6);
-    border: 2px solid #ffd700;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 1em;
-    font-family: 'Georgia', serif;
-  }
-
-  .form-group textarea {
-    min-height: 100px;
-    resize: vertical;
-  }
+  .form-group { margin-bottom: 25px; }
+  .form-group label { display: block; color: #ffd700; font-weight: bold; margin-bottom: 8px; font-size: 1.1em; }
+  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; background: rgba(0,0,0,0.6); border: 2px solid #ffd700; border-radius: 8px; color: #fff; font-size: 1em; font-family: 'Georgia', serif; }
+  .form-group textarea { min-height: 100px; resize: vertical; }
 
   .participant-item {
     background: linear-gradient(145deg, #2d0000, #1a0000);
@@ -732,62 +400,14 @@
     gap: 15px;
     flex-wrap: wrap;
   }
+  .participant-info { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 15px; text-align: left; }
+  .participant-number { font-size: 1.8em; font-weight: bold; color: #ffd700; min-width: 50px; text-align: center; }
+  .participant-emoji { font-size: 2.5em; }
+  .participant-animal { font-size: 1.1em; color: #fff; text-transform: uppercase; font-weight: bold; }
+  .participant-name { flex: 1; font-size: 1.1em; color: #fff; font-weight: bold; text-align: left; border-left: 2px solid #ffd700; padding-left: 15px; }
+  .participant-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-  .participant-info {
-    flex: 1;
-    min-width: 200px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    text-align: left;
-  }
-
-  .participant-number {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #ffd700;
-    min-width: 50px;
-    text-align: center;
-  }
-
-  .participant-emoji {
-    font-size: 2.5em;
-  }
-
-  .participant-animal {
-    font-size: 1.1em;
-    color: #fff;
-    text-transform: uppercase;
-    font-weight: bold;
-  }
-
-  .participant-name {
-    flex: 1;
-    font-size: 1.1em;
-    color: #fff;
-    font-weight: bold;
-    text-align: left;
-    border-left: 2px solid #ffd700;
-    padding-left: 15px;
-  }
-
-  .participant-actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .btn-small {
-    padding: 8px 15px;
-    font-size: 0.9em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s;
-    font-family: 'Georgia', serif;
-  }
-
+  .btn-small { padding: 8px 15px; font-size: 0.9em; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: all 0.2s; font-family: 'Georgia', serif; }
   .btn-edit { background: #4D96FF; color: #fff; }
   .btn-delete { background: #e74c3c; color: #fff; }
   .btn-image { background: #6BCB77; color: #fff; }
@@ -803,96 +423,21 @@
     margin-top: 30px;
     box-shadow: 0 0 40px rgba(0, 255, 0, 0.6);
   }
+  .winner-result h3 { color: #00ff00; font-size: 2em; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0, 255, 0, 0.8); }
+  .winner-details { color: #fff; font-size: 1.2em; margin: 10px 0; }
 
-  .winner-result h3 {
-    color: #00ff00;
-    font-size: 2em;
-    margin-bottom: 20px;
-    text-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
-  }
-
-  .winner-details {
-    color: #fff;
-    font-size: 1.2em;
-    margin: 10px 0;
-  }
-
-  .red-zone {
-    background: linear-gradient(145deg, #8b0000, #4a0000);
-    border: 4px solid #ff0000;
-    border-radius: 20px;
-    padding: 40px;
-    text-align: center;
-    margin: 20px 0;
-  }
-
-  .red-zone h3 {
-    color: #ff0000;
-    font-size: 2.5em;
-    margin-bottom: 20px;
-    text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
-  }
-
-  .danger-btn {
-    background: linear-gradient(145deg, #ff0000, #cc0000);
-    color: #fff;
-    border: 3px solid #fff;
-    padding: 20px 40px;
-    font-size: 1.3em;
-    margin-top: 20px;
-    cursor: pointer;
-    font-family: 'Georgia', serif;
-    font-weight: bold;
-    border-radius: 10px;
-  }
-
-  .confirmation-box {
-    background: rgba(0,0,0,0.6);
-    border: 3px solid #ff0000;
-    border-radius: 15px;
-    padding: 30px;
-    margin: 20px 0;
-    display: none;
-  }
-
+  .red-zone { background: linear-gradient(145deg, #8b0000, #4a0000); border: 4px solid #ff0000; border-radius: 20px; padding: 40px; text-align: center; margin: 20px 0; }
+  .red-zone h3 { color: #ff0000; font-size: 2.5em; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
+  .danger-btn { background: linear-gradient(145deg, #ff0000, #cc0000); color: #fff; border: 3px solid #fff; padding: 20px 40px; font-size: 1.3em; margin-top: 20px; cursor: pointer; font-family: 'Georgia', serif; font-weight: bold; border-radius: 10px; }
+  
+  .confirmation-box { background: rgba(0,0,0,0.6); border: 3px solid #ff0000; border-radius: 15px; padding: 30px; margin: 20px 0; display: none; }
   .confirmation-box.active { display: block; }
 
-  .image-preview {
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 400px;
-    text-align: center;
-  }
+  .image-preview { background: #fff; border-radius: 10px; padding: 20px; margin: 20px auto; max-width: 400px; text-align: center; }
+  .whatsapp-list { background: rgba(0,0,0,0.6); border: 2px solid #25D366; border-radius: 15px; padding: 20px; margin: 20px 0; white-space: pre-wrap; font-family: monospace; text-align: left; max-height: 400px; overflow-y: auto; }
 
-  .whatsapp-list {
-    background: rgba(0,0,0,0.6);
-    border: 2px solid #25D366;
-    border-radius: 15px;
-    padding: 20px;
-    margin: 20px 0;
-    white-space: pre-wrap;
-    font-family: monospace;
-    text-align: left;
-    max-height: 400px;
-    overflow-y: auto;
-  }
-
-  .mini-grid-container {
-    max-width: 800px;
-    margin: 0 auto 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .mini-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-
+  .mini-grid-container { max-width: 800px; margin: 0 auto 30px; display: flex; flex-direction: column; gap: 8px; }
+  .mini-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
   .mini-card {
     background: linear-gradient(145deg, #8b0000 0%, #4a0000 50%, #2d0000 100%);
     border: 2px solid #ffd700;
@@ -904,38 +449,14 @@
     position: relative;
     overflow: hidden;
   }
-
-  .mini-card:hover {
-    transform: scale(1.1);
-    border-color: #fff;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-  }
-
-  .mini-card.selected {
-    border-color: #00ff00;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
-    background: linear-gradient(145deg, #006400, #004d00);
-  }
-
-  .mini-emoji {
-    font-size: 1.8em;
-    display: block;
-    margin-bottom: 2px;
-  }
-
-  .mini-number {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #ffd700;
-  }
+  .mini-card:hover { transform: scale(1.1); border-color: #fff; box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+  .mini-card.selected { border-color: #00ff00; box-shadow: 0 0 20px rgba(0, 255, 0, 0.8); background: linear-gradient(145deg, #006400, #004d00); }
+  .mini-emoji { font-size: 1.8em; display: block; margin-bottom: 2px; }
+  .mini-number { font-size: 1.2em; font-weight: bold; color: #ffd700; }
 
   ::-webkit-scrollbar { width: 12px; }
   ::-webkit-scrollbar-track { background: #1a0a2e; }
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(145deg, #ffd700, #ff8c00);
-    border-radius: 10px;
-    border: 2px solid #1a0a2e;
-  }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(145deg, #ffd700, #ff8c00); border-radius: 10px; border: 2px solid #1a0a2e; }
 </style>
 </head>
 <body>
@@ -943,12 +464,12 @@
 <div class="casino-lights"></div>
 <div class="casino-lights-bottom"></div>
 
-<!-- Link Admin y Botón PANEL ahora ANTES del título, alineados a la derecha -->
+<!-- Link Admin y Botón PANEL: Arriba a la derecha, antes del título -->
 <a class="admin-link" id="adminLink" onclick="openAdminLogin()">· admin ·</a>
 <button class="admin-panel-btn" id="adminPanelBtn" onclick="openAdminPanel()">🎰 PANEL</button>
 
 <div class="title-container">
-  <h1> CASINO DE ANIMALITOS <span class="title-line-2">LOTTO ACTIVO</span></h1>
+  <h1>🎰 CASINO DE ANIMALITOS <span class="title-line-2">LOTTO ACTIVO</span></h1>
 </div>
 <p class="subtitle">✨ ¡Elige tu animal de la suerte y participa! ✨</p>
 <div class="casino-decoration">♠ ♥ ♦ ♣</div>
@@ -977,11 +498,11 @@
 <!-- Modal Login Admin -->
 <div class="modal-overlay" id="adminLoginModal">
   <div class="modal">
-    <h2> ACCESO ADMINISTRADOR</h2>
+    <h2>🔐 ACCESO ADMINISTRADOR</h2>
     <p style="color: #ccc; margin-bottom: 20px;">Ingresa la clave de acceso</p>
     <input type="password" id="adminPassword" placeholder="Contraseña" maxlength="10">
     <br>
-    <button class="btn btn-primary" onclick="verifyAdminPassword()"> ENTRAR</button>
+    <button class="btn btn-primary" onclick="verifyAdminPassword()">🔓 ENTRAR</button>
     <button class="btn btn-secondary" onclick="closeAdminLogin()">❌ CANCELAR</button>
     <p id="loginError" style="color: #ff0000; margin-top: 15px; display: none;">❌ Contraseña incorrecta</p>
   </div>
@@ -1004,7 +525,7 @@
   <!-- PESTAÑA 1: SORTEO -->
   <div class="tab-content active" id="tab-sorteo">
     <h2 style="color: #ffd700; margin-bottom: 30px; text-align: center;">📅 CONFIGURACIÓN DEL SORTEO</h2>
-    <div class="form-group"><label> Fecha del Sorteo:</label><input type="date" id="sorteoFecha"></div>
+    <div class="form-group"><label>📅 Fecha del Sorteo:</label><input type="date" id="sorteoFecha"></div>
     <div class="form-group"><label>⏰ Hora del Sorteo:</label><input type="time" id="sorteoHora"></div>
     <div class="form-group"><label>🏆 Premio(s):</label><textarea id="sorteoPremio" placeholder="Ej: 1er lugar: $500&#10;2do lugar: $200"></textarea></div>
     <div style="text-align: center; margin-top: 30px;">
@@ -1030,7 +551,7 @@
 
   <!-- PESTAÑA 3: GANADORES -->
   <div class="tab-content" id="tab-ganadores">
-    <h2 style="color: #ffd700; margin-bottom: 20px; text-align: center;"> SELECCIONA EL ANIMAL GANADOR</h2>
+    <h2 style="color: #ffd700; margin-bottom: 20px; text-align: center;">🏆 SELECCIONA EL ANIMAL GANADOR</h2>
     <p style="text-align: center; color: #ccc; margin-bottom: 20px;">Haz clic en la miniatura del animal que ganó</p>
     <div class="mini-grid-container" id="miniGridContainer"></div>
     <div class="winner-result" id="winnerResult">
@@ -1041,7 +562,7 @@
         <p>🏆 Premio: <strong id="winnerPrizeDisplay"></strong></p>
       </div>
       <div style="margin-top: 20px;">
-        <button class="btn btn-primary" onclick="generateWinnerImage()">️ GENERAR IMAGEN</button>
+        <button class="btn btn-primary" onclick="generateWinnerImage()">🖼️ GENERAR IMAGEN</button>
         <button class="btn btn-secondary" onclick="sendWinnerWhatsApp()">📱 ENVIAR WHATSAPP</button>
       </div>
     </div>
@@ -1079,93 +600,142 @@
   </div>
 </div>
 
+<!-- FIREBASE SDK (Módulos ES) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAYi_2SJoCP4QmVLvAdtrwUphQEERv4ciY",
+    authDomain: "lottoactivo-29d1e.firebaseapp.com",
+    projectId: "lottoactivo-29d1e",
+    storageBucket: "lottoactivo-29d1e.firebasestorage.app",
+    messagingSenderId: "227044940943",
+    appId: "1:227044940943:web:ed237e3d33d9778399e4fa"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Hacer Firebase disponible globalmente para el script principal
+  window.db = db;
+  window.collection = collection;
+  window.addDoc = addDoc;
+  window.getDocs = getDocs;
+  window.deleteDoc = deleteDoc;
+  window.doc = doc;
+  window.onSnapshot = onSnapshot;
+  window.setDoc = setDoc;
+  window.getDoc = getDoc;
+</script>
+
 <script>
+// OBSERVACIÓN: Zamuro cambiado a Águila (🦅) que es el vector de ave de rapiña más cercano y universal.
+// Twemoji lo renderizará a todo color en PC y Celular por igual.
 const animals = [
-  { num: '00', name: 'Ballena',   emoji: '\u{1F40B}' },
-  { num: '0',  name: 'Delfín',    emoji: '\u{1F42C}' },
-  { num: '1',  name: 'Carnero',   emoji: '\u{1F411}' },
-  { num: '2',  name: 'Toro',      emoji: '\u{1F402}' },
-  { num: '3',  name: 'Ciempiés',  emoji: '\u{1F41B}' },
-  { num: '4',  name: 'Alacrán',   emoji: '\u{1F982}' },
-  { num: '5',  name: 'León',      emoji: '\u{1F981}' },
-  { num: '6',  name: 'Rana',      emoji: '\u{1F438}' },
-  { num: '7',  name: 'Perico',    emoji: '\u{1F99C}' },
-  { num: '8',  name: 'Ratón',     emoji: '\u{1F42D}' },
-  { num: '9',  name: 'Águila',    emoji: '\u{1F985}' },
-  { num: '10', name: 'Tigre',     emoji: '\u{1F42F}' },
-  { num: '11', name: 'Gato',      emoji: '\u{1F431}' },
-  { num: '12', name: 'Caballo',   emoji: '\u{1F434}' },
-  { num: '13', name: 'Mono',      emoji: '\u{1F435}' },
-  { num: '14', name: 'Paloma',    emoji: '\u{1F54A}\u{FE0F}' },
-  { num: '15', name: 'Zorro',     emoji: '\u{1F98A}' },
-  { num: '16', name: 'Oso',       emoji: '\u{1F43B}' },
-  { num: '17', name: 'Pavo',      emoji: '\u{1F983}' },
-  { num: '18', name: 'Burro',     emoji: '\u{1FACF}' },
-  { num: '19', name: 'Chivo',     emoji: '\u{1F410}' },
-  { num: '20', name: 'Cochino',   emoji: '\u{1F416}' },
-  { num: '21', name: 'Gallo',     emoji: '\u{1F413}' },
-  { num: '22', name: 'Camello',   emoji: '\u{1F42B}' },
-  { num: '23', name: 'Cebra',     emoji: '\u{1F993}' },
-  { num: '24', name: 'Iguana',    emoji: '\u{1F98E}' },
-  { num: '25', name: 'Gallina',   emoji: '\u{1F414}' },
-  { num: '26', name: 'Vaca',      emoji: '\u{1F404}' },
-  { num: '27', name: 'Perro',     emoji: '\u{1F415}' },
-  { num: '28', name: 'Zamuro',    emoji: '\u{1F987}' },
-  { num: '29', name: 'Elefante',  emoji: '\u{1F418}' },
-  { num: '30', name: 'Caimán',    emoji: '\u{1F40A}' },
-  { num: '31', name: 'Lapa',      emoji: '\u{1F9AB}' },
-  { num: '32', name: 'Ardilla',   emoji: '\u{1F43F}\u{FE0F}' },
-  { num: '33', name: 'Pescado',   emoji: '\u{1F420}' },
-  { num: '34', name: 'Venado',    emoji: '\u{1F98C}' },
-  { num: '35', name: 'Jirafa',    emoji: '\u{1F992}' },
-  { num: '36', name: 'Culebra',   emoji: '\u{1F40D}' }
+  { num: '00', name: 'Ballena',   emoji: '🐋' },
+  { num: '0',  name: 'Delfín',    emoji: '🐬' },
+  { num: '1',  name: 'Carnero',   emoji: '🐑' },
+  { num: '2',  name: 'Toro',      emoji: '🐂' },
+  { num: '3',  name: 'Ciempiés',  emoji: '🐛' },
+  { num: '4',  name: 'Alacrán',   emoji: '🦂' },
+  { num: '5',  name: 'León',      emoji: '🦁' },
+  { num: '6',  name: 'Rana',      emoji: '🐸' },
+  { num: '7',  name: 'Perico',    emoji: '🦜' },
+  { num: '8',  name: 'Ratón',     emoji: '🐭' },
+  { num: '9',  name: 'Águila',    emoji: '🦅' },
+  { num: '10', name: 'Tigre',     emoji: '🐯' },
+  { num: '11', name: 'Gato',      emoji: '🐱' },
+  { num: '12', name: 'Caballo',   emoji: '🐴' },
+  { num: '13', name: 'Mono',      emoji: '🐵' },
+  { num: '14', name: 'Paloma',    emoji: '🕊️' },
+  { num: '15', name: 'Zorro',     emoji: '🦊' },
+  { num: '16', name: 'Oso',       emoji: '🐻' },
+  { num: '17', name: 'Pavo',      emoji: '🦃' },
+  { num: '18', name: 'Burro',     emoji: '🫏' },
+  { num: '19', name: 'Chivo',     emoji: '🐐' },
+  { num: '20', name: 'Cochino',   emoji: '🐖' },
+  { num: '21', name: 'Gallo',     emoji: '🐓' },
+  { num: '22', name: 'Camello',   emoji: '🐫' },
+  { num: '23', name: 'Cebra',     emoji: '🦓' },
+  { num: '24', name: 'Iguana',    emoji: '🦎' },
+  { num: '25', name: 'Gallina',   emoji: '🐔' },
+  { num: '26', name: 'Vaca',      emoji: '🐄' },
+  { num: '27', name: 'Perro',     emoji: '🐕' },
+  { num: '28', name: 'Zamuro',    emoji: '🦅' },
+  { num: '29', name: 'Elefante',  emoji: '🐘' },
+  { num: '30', name: 'Caimán',    emoji: '🐊' },
+  { num: '31', name: 'Lapa',      emoji: '🦫' },
+  { num: '32', name: 'Ardilla',   emoji: '🐿️' },
+  { num: '33', name: 'Pescado',   emoji: '🐠' },
+  { num: '34', name: 'Venado',    emoji: '🦌' },
+  { num: '35', name: 'Jirafa',    emoji: '🦒' },
+  { num: '36', name: 'Culebra',   emoji: '🐍' }
 ];
 
 let selectedAnimal = null;
-let participants = JSON.parse(localStorage.getItem('casino_participants') || '{}');
-let currentSorteo = JSON.parse(localStorage.getItem('casino_evento') || '{}');
-let currentWinner = null;
 let currentWinnerNum = null;
 let isAdminLoggedIn = false;
+let localParticipants = {};
 
+// OBSERVACIÓN: Ordenamiento a prueba de balas (00, 0, 1, 2... 36)
 function sortNumbers(a, b) {
-  const numA = a === '00' ? 0 : a === '0' ? 1 : parseInt(a);
-  const numB = b === '00' ? 0 : b === '0' ? 1 : parseInt(b);
-  return numA - numB;
+  if (a === '00') return -2;
+  if (a === '0') return -1;
+  if (b === '00') return 2;
+  if (b === '0') return 1;
+  return parseInt(a) - parseInt(b);
 }
 
-function renderGrid() {
+// Función para aplicar Twemoji (convierte emojis en SVGs coloridos)
+function applyTwemoji(element) {
+  if (typeof twemoji !== 'undefined') {
+    twemoji.parse(element, { folder: 'svg', ext: '.svg' });
+  }
+}
+
+async function renderGrid() {
   const container = document.getElementById('gridContainer');
   container.innerHTML = '';
-  const topRow = document.createElement('div');
-  topRow.className = 'top-row';
-  topRow.appendChild(createCard(animals[0]));
-  for (let i = 0; i < 2; i++) {
-    const empty = document.createElement('div');
-    empty.className = 'animal-card';
-    empty.style.visibility = 'hidden';
-    topRow.appendChild(empty);
+  
+  // Escuchar cambios en tiempo real desde Firebase
+  if (window.onSnapshot) {
+    window.onSnapshot(window.collection(window.db, "participantes"), (snapshot) => {
+      localParticipants = {};
+      snapshot.forEach((doc) => {
+        localParticipants[doc.id] = doc.data();
+      });
+      drawGridElements(container);
+      updateStats();
+    });
+  } else {
+    drawGridElements(container);
   }
+}
+
+function drawGridElements(container) {
+  const topRow = document.createElement('div'); topRow.className = 'top-row';
+  topRow.appendChild(createCard(animals[0]));
+  for (let i = 0; i < 2; i++) { const e = document.createElement('div'); e.className = 'animal-card'; e.style.visibility = 'hidden'; topRow.appendChild(e); }
   topRow.appendChild(createCard(animals[1]));
   container.appendChild(topRow);
+  
   const remaining = animals.slice(2);
   for (let row = 0; row < 9; row++) {
-    const rowDiv = document.createElement('div');
-    rowDiv.className = 'row';
+    const rowDiv = document.createElement('div'); rowDiv.className = 'row';
     for (let col = 0; col < 4; col++) {
       const idx = row * 4 + col;
       if (idx < remaining.length) rowDiv.appendChild(createCard(remaining[idx]));
     }
     container.appendChild(rowDiv);
   }
-  updateStats();
+  // Aplicar vectores coloridos
+  applyTwemoji(container);
 }
 
 function createCard(animal) {
-  const card = document.createElement('div');
-  card.className = 'animal-card';
-  card.dataset.num = animal.num;
-  const isTaken = participants[animal.num];
+  const card = document.createElement('div'); card.className = 'animal-card';
+  const isTaken = localParticipants[animal.num];
   card.innerHTML = '<span class="animal-emoji">' + animal.emoji + '</span>' +
     '<div class="animal-number">' + animal.num + '</div>' +
     '<div class="animal-name">' + animal.name + '</div>' +
@@ -1177,12 +747,13 @@ function createCard(animal) {
 
 function openModal(animal) {
   selectedAnimal = animal;
-  document.getElementById('previewEmoji').textContent = animal.emoji;
+  document.getElementById('previewEmoji').innerHTML = animal.emoji;
   document.getElementById('previewText').textContent = 'Animal N° ' + animal.num + ' - ' + animal.name;
   document.getElementById('participantName').value = '';
   document.getElementById('ticketArea').innerHTML = '';
   document.getElementById('modalOverlay').classList.add('active');
   setTimeout(function() { document.getElementById('participantName').focus(); }, 100);
+  applyTwemoji(document.getElementById('previewEmoji'));
 }
 
 function closeModal() {
@@ -1190,38 +761,60 @@ function closeModal() {
   selectedAnimal = null;
 }
 
-function confirmParticipation() {
+async function confirmParticipation() {
   const name = document.getElementById('participantName').value.trim();
   if (!name) { alert('Por favor escribe tu nombre'); return; }
   if (!selectedAnimal) return;
-  participants[selectedAnimal.num] = {
-    name: name, animal: selectedAnimal.name, emoji: selectedAnimal.emoji,
-    number: selectedAnimal.num, date: new Date().toLocaleString('es-ES')
-  };
-  localStorage.setItem('casino_participants', JSON.stringify(participants));
-  const successHTML = '<div class="success-msg">🎉 ¡FELICIDADES, ' + name + '!<br>Participas con el N° ' + selectedAnimal.num + ' - ' + selectedAnimal.name + ' ' + selectedAnimal.emoji + '</div>';
-  const ticketHTML = '<div class="ticket"><div class="ticket-header"><h3>🎟️ TICKET DEL CASINO</h3><small>Sorteo de los 38 Animales</small></div><div class="ticket-body"><div class="ticket-emoji">' + selectedAnimal.emoji + '</div><div class="ticket-info"><p><strong>Jugador:</strong> ' + name + '</p><p><strong>N° Animal:</strong> ' + selectedAnimal.num + '</p><p><strong>Animal:</strong> ' + selectedAnimal.name + '</p><p><strong>Fecha:</strong> ' + participants[selectedAnimal.num].date + '</p><p><strong>ID Ticket:</strong> #' + Date.now().toString(36).toUpperCase() + '</p></div></div></div>';
-  document.getElementById('ticketArea').innerHTML = successHTML + ticketHTML;
-  event.target.disabled = true;
-  event.target.textContent = '✅ REGISTRADO';
-  setTimeout(function() { closeModal(); renderGrid(); }, 3500);
+
+  const btn = event.target;
+  btn.disabled = true; btn.textContent = '⏳ REGISTRANDO...';
+
+  try {
+    await window.addDoc(window.collection(window.db, "participantes"), {
+      num: selectedAnimal.num,
+      name: name,
+      animalName: selectedAnimal.name,
+      emoji: selectedAnimal.emoji,
+      timestamp: new Date()
+    });
+    
+    const successHTML = '<div class="success-msg">🎉 ¡FELICIDADES, ' + name + '!<br>Participas con el N° ' + selectedAnimal.num + ' - ' + selectedAnimal.name + ' ' + selectedAnimal.emoji + '</div>';
+    const ticketHTML = '<div class="ticket"><div class="ticket-header"><h3>🎟️ TICKET DEL CASINO</h3><small>Sorteo de los 38 Animales</small></div><div class="ticket-body"><div class="ticket-emoji">' + selectedAnimal.emoji + '</div><div class="ticket-info"><p><strong>Jugador:</strong> ' + name + '</p><p><strong>N° Animal:</strong> ' + selectedAnimal.num + '</p><p><strong>Animal:</strong> ' + selectedAnimal.name + '</p><p><strong>Fecha:</strong> ' + new Date().toLocaleString('es-ES') + '</p><p><strong>ID Ticket:</strong> #' + Date.now().toString(36).toUpperCase() + '</p></div></div></div>';
+    document.getElementById('ticketArea').innerHTML = successHTML + ticketHTML;
+    applyTwemoji(document.getElementById('ticketArea'));
+    
+    btn.textContent = '✅ REGISTRADO';
+    setTimeout(function() { closeModal(); }, 3500);
+  } catch (error) {
+    alert("Error al guardar: " + error.message);
+    btn.disabled = false; btn.textContent = '✅ ENVIAR';
+  }
 }
 
 function updateStats() {
   const statsSection = document.getElementById('statsSection');
   const statsGrid = document.getElementById('statsGrid');
-  const keys = Object.keys(participants);
+  
+  // Ordenar las claves por número de animal (00, 0, 1, 2... 36)
+  const keys = Object.keys(localParticipants).sort(function(a, b) {
+    return sortNumbers(localParticipants[a].num, localParticipants[b].num);
+  });
+
   if (keys.length === 0) { statsSection.style.display = 'none'; return; }
   statsSection.style.display = 'block';
   statsGrid.innerHTML = '';
+
   keys.forEach(function(key) {
-    const p = participants[key];
+    const p = localParticipants[key];
     const item = document.createElement('div');
     item.className = 'stat-item';
-    item.innerHTML = p.emoji + ' N°' + p.number + ' - ' + p.name;
+    item.innerHTML = '<span style="font-size:1.5em; vertical-align:middle;">' + p.emoji + '</span> <strong>N°' + p.num + '</strong> - ' + p.name;
     statsGrid.appendChild(item);
   });
+  applyTwemoji(statsGrid);
 }
+
+// ============ FUNCIONES DE ADMIN ============
 
 function openAdminLogin() {
   document.getElementById('adminLoginModal').classList.add('active');
@@ -1264,100 +857,157 @@ function goToHome() {
 function switchTab(tabName) {
   document.querySelectorAll('.tab-content').forEach(function(tab) { tab.classList.remove('active'); });
   document.querySelectorAll('.tab-btn').forEach(function(btn) { btn.classList.remove('active'); });
+  
   document.getElementById('tab-' + tabName).classList.add('active');
   event.target.classList.add('active');
+  
   if (tabName === 'participantes') renderParticipantsList();
   if (tabName === 'ganadores') renderMiniGrid();
 }
+
+// ============ PESTAÑA SORTEO ============
 
 function saveSorteo() {
   const fecha = document.getElementById('sorteoFecha').value;
   const hora = document.getElementById('sorteoHora').value;
   const premio = document.getElementById('sorteoPremio').value;
-  currentSorteo = { fecha: fecha, hora: hora, premio: premio, estado: 'activo' };
-  localStorage.setItem('casino_evento', JSON.stringify(currentSorteo));
-  alert('✅ Sorteo guardado correctamente');
-  loadSorteoData();
+  
+  const data = { fecha: fecha, hora: hora, premio: premio, estado: 'activo' };
+  window.setDoc(window.doc(window.db, "config", "sorteo_actual"), data).then(function() {
+    alert('✅ Sorteo guardado correctamente en la nube');
+    loadSorteoData();
+  }).catch(function(error) {
+    alert("Error: " + error.message);
+  });
 }
 
 function loadSorteoData() {
-  if (currentSorteo.fecha) {
-    document.getElementById('sorteoFecha').value = currentSorteo.fecha;
-    document.getElementById('sorteoHora').value = currentSorteo.hora;
-    document.getElementById('sorteoPremio').value = currentSorteo.premio;
-    document.getElementById('infoFecha').textContent = currentSorteo.fecha;
-    document.getElementById('infoHora').textContent = currentSorteo.hora;
-    document.getElementById('infoPremio').textContent = currentSorteo.premio;
-    document.getElementById('sorteoInfo').style.display = 'block';
+  if (window.getDoc) {
+    window.getDoc(window.doc(window.db, "config", "sorteo_actual")).then(function(docSnap) {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.getElementById('sorteoFecha').value = data.fecha || '';
+        document.getElementById('sorteoHora').value = data.hora || '';
+        document.getElementById('sorteoPremio').value = data.premio || '';
+        
+        document.getElementById('infoFecha').textContent = data.fecha || 'No definida';
+        document.getElementById('infoHora').textContent = data.hora || 'No definida';
+        document.getElementById('infoPremio').textContent = data.premio || 'No definido';
+        document.getElementById('sorteoInfo').style.display = 'block';
+      }
+    });
   }
 }
 
 function publishSorteo() {
-  if (!currentSorteo.fecha) { alert('Primero guarda la información del sorteo'); return; }
-  const text = '🎰 *CASINO DE ANIMALITOS - LOTTO ACTIVO* 🎰\n\n📅 Fecha: ' + currentSorteo.fecha + '\n⏰ Hora: ' + currentSorteo.hora + '\n🏆 Premio: ' + currentSorteo.premio + '\n\n¡Participa ahora! 🍀';
-  navigator.clipboard.writeText(text).then(function() { alert('📋 Texto copiado al portapapeles'); });
-}
-
-function renderParticipantsList() {
-  const container = document.getElementById('participantsList');
-  const keys = Object.keys(participants).sort(sortNumbers);
-  if (keys.length === 0) { container.innerHTML = '<p style="text-align: center; color: #ccc; padding: 40px;">No hay participantes registrados</p>'; return; }
-  let html = '';
-  keys.forEach(function(num) {
-    const p = participants[num];
-    const animal = animals.find(function(a) { return a.num === num; });
-    html += '<div class="participant-item"><div class="participant-info"><div class="participant-number">' + num + '</div><div class="participant-emoji">' + animal.emoji + '</div><div class="participant-animal">' + animal.name + '</div><div class="participant-name">' + p.name + '</div></div><div class="participant-actions"><button class="btn-small btn-edit" onclick="editParticipant(\'' + num + '\')">✏️ Editar</button><button class="btn-small btn-image" onclick="generateParticipantImage(\'' + num + '\')">🖼️ Imagen</button><button class="btn-small btn-delete" onclick="deleteParticipant(\'' + num + '\')">🗑️ Eliminar</button></div></div>';
+  const fecha = document.getElementById('sorteoFecha').value;
+  const hora = document.getElementById('sorteoHora').value;
+  const premio = document.getElementById('sorteoPremio').value;
+  
+  if (!fecha) { alert('Primero guarda la información del sorteo'); return; }
+  
+  const text = '🎰 *CASINO DE ANIMALITOS - LOTTO ACTIVO* 🎰\n\n' +
+    '📅 Fecha: ' + fecha + '\n' +
+    '⏰ Hora: ' + hora + '\n' +
+    '🏆 Premio: ' + premio + '\n\n' +
+    '¡Participa ahora! 🍀';
+  
+  navigator.clipboard.writeText(text).then(function() {
+    alert('📋 Texto copiado al portapapeles');
   });
+}
+
+// ============ PESTAÑA PARTICIPANTES ============
+
+async function renderParticipantsList() {
+  const container = document.getElementById('participantsList');
+  if (!window.getDocs) { container.innerHTML = '<p style="text-align: center; color: #ccc; padding: 40px;">Cargando Firebase...</p>'; return; }
+  
+  const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
+  const list = [];
+  querySnapshot.forEach(function(doc) { list.push({ id: doc.id, ...doc.data() }); });
+  
+  // OBSERVACIÓN: Ordenar la lista de participantes estrictamente (00, 0, 1, 2... 36)
+  list.sort(function(a, b) { return sortNumbers(a.num, b.num); });
+
+  if (list.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: #ccc; padding: 40px;">No hay participantes registrados</p>';
+    return;
+  }
+  
+  let html = '';
+  list.forEach(function(p) {
+    html += '<div class="participant-item">' +
+      '<div class="participant-info">' +
+        '<div class="participant-number">' + p.num + '</div>' +
+        '<div class="participant-emoji">' + p.emoji + '</div>' +
+        '<div class="participant-animal">' + p.animalName + '</div>' +
+        '<div class="participant-name">' + p.name + '</div>' +
+      '</div>' +
+      '<div class="participant-actions">' +
+        '<button class="btn-small btn-image" onclick="generateParticipantImage(\'' + p.id + '\', \'' + p.num + '\', \'' + p.name + '\', \'' + p.emoji + '\', \'' + p.animalName + '\')">🖼️ Imagen</button>' +
+        '<button class="btn-small btn-delete" onclick="deleteParticipant(\'' + p.id + '\', \'' + p.num + '\')">🗑️ Eliminar</button>' +
+      '</div>' +
+    '</div>';
+  });
+  
   container.innerHTML = html;
+  applyTwemoji(container);
 }
 
-function editParticipant(num) {
-  const p = participants[num];
-  const newName = prompt('Nuevo nombre:', p.name);
-  if (newName && newName.trim()) {
-    participants[num].name = newName.trim();
-    localStorage.setItem('casino_participants', JSON.stringify(participants));
-    renderParticipantsList();
-    renderGrid();
+async function deleteParticipant(id, num) {
+  if (confirm('¿Eliminar a este participante del animal ' + num + '? El animal quedará disponible nuevamente de forma inmediata.')) {
+    try {
+      await window.deleteDoc(window.doc(window.db, "participantes", id));
+      renderParticipantsList();
+    } catch (error) {
+      alert("Error al eliminar: " + error.message);
+    }
   }
 }
 
-function deleteParticipant(num) {
-  if (confirm('¿Eliminar a ' + participants[num].name + ' del animal ' + num + '?')) {
-    delete participants[num];
-    localStorage.setItem('casino_participants', JSON.stringify(participants));
-    renderParticipantsList();
-    renderGrid();
-  }
-}
-
-function generateParticipantImage(num) {
-  const p = participants[num];
-  const animal = animals.find(function(a) { return a.num === num; });
+async function generateParticipantImage(id, num, name, emoji, animalName) {
+  // Buscar todos los animales de este participante
+  const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
   const participantAnimals = [];
-  Object.keys(participants).forEach(function(key) {
-    if (participants[key].name === p.name) {
-      participantAnimals.push({ num: key, animal: animals.find(function(a) { return a.num === key; }) });
+  querySnapshot.forEach(function(doc) {
+    const data = doc.data();
+    if (data.name === name) {
+      participantAnimals.push({ num: data.num, emoji: data.emoji, animalName: data.animalName });
     }
   });
+  
   if (participantAnimals.length > 1) {
-    const options = participantAnimals.map(function(pa) { return pa.num + ' ' + pa.animal.emoji + ' ' + pa.animal.name; }).join('\n');
-    const choice = confirm(p.name + ' tiene ' + participantAnimals.length + ' animalitos:\n\n' + options + '\n\nAceptar: Generar imagen de TODOS\nCancelar: Generar solo este (' + num + ')');
-    if (choice) generateImageForMultiple(p.name, participantAnimals);
-    else generateSingleImage(p, animal);
+    const options = participantAnimals.map(function(pa) { return pa.num + ' ' + pa.emoji + ' ' + pa.animalName; }).join('\n');
+    const choice = confirm(name + ' tiene ' + participantAnimals.length + ' animalitos:\n\n' + options + '\n\nAceptar: Generar imagen de TODOS\nCancelar: Generar solo este (' + num + ')');
+    if (choice) {
+      generateImageForMultiple(name, participantAnimals);
+    } else {
+      generateSingleImage(name, num, emoji, animalName);
+    }
   } else {
-    generateSingleImage(p, animal);
+    generateSingleImage(name, num, emoji, animalName);
   }
 }
 
-function generateSingleImage(participant, animal) {
+function generateSingleImage(name, num, emoji, animalName) {
   const div = document.createElement('div');
   div.className = 'image-preview';
-  div.innerHTML = '<div style="background: linear-gradient(135deg, #1a0a2e, #0d0015); padding: 40px; border-radius: 20px; border: 4px solid #ffd700;"><div style="font-size: 3em; margin-bottom: 20px;"></div><h2 style="color: #ffd700; margin-bottom: 30px; text-shadow: 0 0 20px rgba(255,215,0,0.8);">CASINO DE ANIMALITOS</h2><div style="font-size: 6em; margin: 30px 0;">' + animal.emoji + '</div><p style="color: #fff; font-size: 1.5em; margin: 10px 0;"><strong>' + participant.name + '</strong></p><p style="color: #ffd700; font-size: 1.3em;">N° ' + animal.num + ' - ' + animal.name + '</p><p style="color: #ccc; margin-top: 30px; font-size: 0.9em;">' + (currentSorteo.fecha || 'Próximo sorteo') + '</p></div>';
+  div.innerHTML = '<div style="background: linear-gradient(135deg, #1a0a2e, #0d0015); padding: 40px; border-radius: 20px; border: 4px solid #ffd700;">' +
+    '<div style="font-size: 3em; margin-bottom: 20px;">🎰</div>' +
+    '<h2 style="color: #ffd700; margin-bottom: 30px; text-shadow: 0 0 20px rgba(255,215,0,0.8);">CASINO DE ANIMALITOS</h2>' +
+    '<div style="font-size: 6em; margin: 30px 0;">' + emoji + '</div>' +
+    '<p style="color: #fff; font-size: 1.5em; margin: 10px 0;"><strong>' + name + '</strong></p>' +
+    '<p style="color: #ffd700; font-size: 1.3em;">N° ' + num + ' - ' + animalName + '</p>' +
+    '<p style="color: #ccc; margin-top: 30px; font-size: 0.9em;">Lotto Activo</p>' +
+  '</div>';
+  
   document.body.appendChild(div);
+  applyTwemoji(div);
+  
   html2canvas(div, { scale: 2 }).then(function(canvas) {
     const link = document.createElement('a');
-    link.download = participant.name + '_' + animal.num + '.png';
+    link.download = name + '_' + num + '.png';
     link.href = canvas.toDataURL();
     link.click();
     document.body.removeChild(div);
@@ -1367,11 +1017,25 @@ function generateSingleImage(participant, animal) {
 function generateImageForMultiple(name, animalsList) {
   const div = document.createElement('div');
   div.className = 'image-preview';
+  
   let animalsHtml = animalsList.map(function(a) {
-    return '<div style="margin: 15px 0; padding: 10px; background: rgba(255,215,0,0.1); border-radius: 10px;"><span style="font-size: 2.5em;">' + a.animal.emoji + '</span><span style="color: #ffd700; font-size: 1.2em; margin-left: 10px;">N° ' + a.num + ' - ' + a.animal.name + '</span></div>';
+    return '<div style="margin: 15px 0; padding: 10px; background: rgba(255,215,0,0.1); border-radius: 10px;">' +
+      '<span style="font-size: 2.5em;">' + a.emoji + '</span>' +
+      '<span style="color: #ffd700; font-size: 1.2em; margin-left: 10px;">N° ' + a.num + ' - ' + a.animalName + '</span>' +
+    '</div>';
   }).join('');
-  div.innerHTML = '<div style="background: linear-gradient(135deg, #1a0a2e, #0d0015); padding: 40px; border-radius: 20px; border: 4px solid #ffd700;"><div style="font-size: 3em; margin-bottom: 20px;">🎰</div><h2 style="color: #ffd700; margin-bottom: 30px; text-shadow: 0 0 20px rgba(255,215,0,0.8);">CASINO DE ANIMALITOS</h2><p style="color: #fff; font-size: 1.8em; margin-bottom: 30px;"><strong>' + name + '</strong></p>' + animalsHtml + '<p style="color: #ccc; margin-top: 30px; font-size: 0.9em;">' + (currentSorteo.fecha || 'Próximo sorteo') + '</p></div>';
+  
+  div.innerHTML = '<div style="background: linear-gradient(135deg, #1a0a2e, #0d0015); padding: 40px; border-radius: 20px; border: 4px solid #ffd700;">' +
+    '<div style="font-size: 3em; margin-bottom: 20px;">🎰</div>' +
+    '<h2 style="color: #ffd700; margin-bottom: 30px; text-shadow: 0 0 20px rgba(255,215,0,0.8);">CASINO DE ANIMALITOS</h2>' +
+    '<p style="color: #fff; font-size: 1.8em; margin-bottom: 30px;"><strong>' + name + '</strong></p>' +
+    animalsHtml +
+    '<p style="color: #ccc; margin-top: 30px; font-size: 0.9em;">Lotto Activo</p>' +
+  '</div>';
+  
   document.body.appendChild(div);
+  applyTwemoji(div);
+  
   html2canvas(div, { scale: 2 }).then(function(canvas) {
     const link = document.createElement('a');
     link.download = name + '_todos.png';
@@ -1381,25 +1045,37 @@ function generateImageForMultiple(name, animalsList) {
   });
 }
 
-function generateWhatsAppList() {
-  const keys = Object.keys(participants).sort(sortNumbers);
-  if (keys.length === 0) { alert('No hay participantes'); return; }
-  let text = '🎰 *CASINO DE ANIMALITOS - LOTTO ACTIVO* 🎰\n';
-  if (currentSorteo.fecha) { text += ' Fecha: ' + currentSorteo.fecha + '\n⏰ Hora: ' + currentSorteo.hora + '\n'; }
-  if (currentSorteo.premio) { text += '🏆 Premio: ' + currentSorteo.premio + '\n'; }
-  text += '\n📋 *PARTICIPANTES:*\n\n';
-  keys.forEach(function(num) {
-    const p = participants[num];
-    const animal = animals.find(function(a) { return a.num === num; });
-    text += animal.emoji + ' *' + num + '* ' + animal.name + ' - ' + p.name + '\n';
+async function generateWhatsAppList() {
+  if (!window.getDocs) { alert('Cargando datos...'); return; }
+  const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
+  const list = [];
+  querySnapshot.forEach(function(doc) { list.push(doc.data()); });
+  
+  // Ordenar estrictamente
+  list.sort(function(a, b) { return sortNumbers(a.num, b.num); });
+  
+  if (list.length === 0) { alert('No hay participantes'); return; }
+  
+  let text = '🎰 *CASINO DE ANIMALITOS - LOTTO ACTIVO* 🎰\n\n📋 *PARTICIPANTES:*\n\n';
+  list.forEach(function(p) {
+    text += p.emoji + ' *' + p.num + '* ' + p.animalName + ' - ' + p.name + '\n';
   });
   text += '\n¡Buena suerte a todos! 🍀';
+  
   const modal = document.createElement('div');
   modal.className = 'modal-overlay';
   modal.style.display = 'flex';
-  modal.innerHTML = '<div class="modal" style="max-width: 600px;"><h2>📱 LISTA PARA WHATSAPP</h2><div class="whatsapp-list">' + text + '</div><button class="btn btn-primary" onclick="copyToClipboard(this)">📋 COPIAR</button><button class="btn btn-secondary" onclick="openWhatsApp(this)">💬 ENVIAR WHATSAPP</button><button class="btn btn-secondary" onclick="this.closest(\'.modal-overlay\').remove()"> CERRAR</button></div>';
+  modal.innerHTML = '<div class="modal" style="max-width: 600px;">' +
+    '<h2>📱 LISTA PARA WHATSAPP</h2>' +
+    '<div class="whatsapp-list">' + text + '</div>' +
+    '<button class="btn btn-primary" onclick="copyToClipboard(this)">📋 COPIAR</button>' +
+    '<button class="btn btn-secondary" onclick="openWhatsApp(this)">💬 ENVIAR WHATSAPP</button>' +
+    '<button class="btn btn-secondary" onclick="this.closest(\'.modal-overlay\').remove()">❌ CERRAR</button>' +
+  '</div>';
+  
   modal.querySelector('.btn-primary').dataset.text = text;
   modal.querySelector('.btn-secondary').dataset.text = text;
+  
   document.body.appendChild(modal);
 }
 
@@ -1414,30 +1090,30 @@ function openWhatsApp(btn) {
   window.open('https://wa.me/?text=' + encoded, '_blank');
 }
 
+// ============ PESTAÑA GANADORES (con mini grid) ============
+
 function renderMiniGrid() {
   const container = document.getElementById('miniGridContainer');
   container.innerHTML = '';
-  const topRow = document.createElement('div');
-  topRow.className = 'mini-row';
+
+  const topRow = document.createElement('div'); topRow.className = 'mini-row';
   topRow.appendChild(createMiniCard(animals[0]));
   for (let i = 0; i < 2; i++) {
-    const empty = document.createElement('div');
-    empty.className = 'mini-card';
-    empty.style.visibility = 'hidden';
-    topRow.appendChild(empty);
+    const empty = document.createElement('div'); empty.className = 'mini-card'; empty.style.visibility = 'hidden'; topRow.appendChild(empty);
   }
   topRow.appendChild(createMiniCard(animals[1]));
   container.appendChild(topRow);
+
   const remaining = animals.slice(2);
   for (let row = 0; row < 9; row++) {
-    const rowDiv = document.createElement('div');
-    rowDiv.className = 'mini-row';
+    const rowDiv = document.createElement('div'); rowDiv.className = 'mini-row';
     for (let col = 0; col < 4; col++) {
       const idx = row * 4 + col;
       if (idx < remaining.length) rowDiv.appendChild(createMiniCard(remaining[idx]));
     }
     container.appendChild(rowDiv);
   }
+  applyTwemoji(container);
 }
 
 function createMiniCard(animal) {
@@ -1449,38 +1125,70 @@ function createMiniCard(animal) {
   return card;
 }
 
-function selectWinner(num) {
+async function selectWinner(num) {
   currentWinnerNum = num;
   renderMiniGrid();
+  
   const animal = animals.find(function(a) { return a.num === num; });
-  const participant = participants[num];
-  if (participant) {
-    currentWinner = { num: num, animal: animal, participant: participant, premio: currentSorteo.premio || 'Por definir' };
-    document.getElementById('winnerNameDisplay').textContent = participant.name;
+  
+  // Buscar si alguien tiene este animal en Firebase
+  let winner = null;
+  if (window.getDocs) {
+    const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
+    querySnapshot.forEach(function(doc) {
+      if (doc.data().num === num) winner = doc.data();
+    });
+  }
+  
+  const display = document.getElementById('winnerResult');
+  if (winner) {
+    document.getElementById('winnerNameDisplay').textContent = winner.name;
     document.getElementById('winnerAnimalDisplay').textContent = animal.num + ' - ' + animal.name + ' ' + animal.emoji;
-    document.getElementById('winnerPrizeDisplay').textContent = currentWinner.premio;
-    document.getElementById('winnerResult').style.display = 'block';
+    
+    // Obtener premio de la config
+    let premio = 'Por definir';
+    if (window.getDoc) {
+      const configDoc = await window.getDoc(window.doc(window.db, "config", "sorteo_actual"));
+      if (configDoc.exists()) premio = configDoc.data().premio || 'Por definir';
+    }
+    document.getElementById('winnerPrizeDisplay').textContent = premio;
+    display.style.display = 'block';
   } else {
-    currentWinner = null;
     document.getElementById('winnerNameDisplay').textContent = 'Nadie participó con este animal';
     document.getElementById('winnerAnimalDisplay').textContent = animal.num + ' - ' + animal.name + ' ' + animal.emoji;
     document.getElementById('winnerPrizeDisplay').textContent = '-';
-    document.getElementById('winnerResult').style.display = 'block';
+    display.style.display = 'block';
   }
+  applyTwemoji(display);
 }
 
 function generateWinnerImage() {
-  if (!currentWinner) { alert('Primero selecciona un animal ganador'); return; }
-  const participant = currentWinner.participant;
-  const animal = currentWinner.animal;
-  const premio = currentWinner.premio;
+  const name = document.getElementById('winnerNameDisplay').textContent;
+  const animalText = document.getElementById('winnerAnimalDisplay').textContent;
+  const premio = document.getElementById('winnerPrizeDisplay').textContent;
+  
+  if (name === 'Nadie participó con este animal') { alert('No hay ganador para generar imagen'); return; }
+  
   const div = document.createElement('div');
   div.className = 'image-preview';
-  div.innerHTML = '<div style="background: linear-gradient(135deg, #006400, #004d00); padding: 40px; border-radius: 20px; border: 4px solid #00ff00; color: #fff;"><div style="font-size: 3em; margin-bottom: 20px;">🎉</div><h2 style="color: #00ff00; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0,255,0,0.8);">¡FELICIDADES!</h2><p style="font-size: 1.8em; margin-bottom: 30px;"><strong>' + (participant ? participant.name : 'Sin ganador') + '</strong></p><div style="font-size: 6em; margin: 30px 0;">' + animal.emoji + '</div><p style="color: #ffd700; font-size: 1.3em; margin-bottom: 20px;">Ganó con: N° ' + animal.num + ' - ' + animal.name + '</p><div style="background: rgba(0,255,0,0.2); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.5em; color: #00ff00;">🏆 PREMIO: ' + premio + '</p></div><p style="color: #ccc; margin-top: 30px; font-style: italic;">¡Te esperamos en el próximo sorteo!</p></div>';
+  div.innerHTML = '<div style="background: linear-gradient(135deg, #006400, #004d00); padding: 40px; border-radius: 20px; border: 4px solid #00ff00; color: #fff;">' +
+    '<div style="font-size: 3em; margin-bottom: 20px;">🎉</div>' +
+    '<h2 style="color: #00ff00; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0,255,0,0.8);">¡FELICIDADES!</h2>' +
+    '<p style="font-size: 1.8em; margin-bottom: 30px;"><strong>' + name + '</strong></p>' +
+    '<div style="font-size: 6em; margin: 30px 0;">' + animalText.split(' ').pop() + '</div>' +
+    '<p style="color: #ffd700; font-size: 1.3em; margin-bottom: 20px;">Ganó con: ' + animalText + '</p>' +
+    '<div style="background: rgba(0,255,0,0.2); padding: 20px; border-radius: 10px; margin: 20px 0;">' +
+      '<p style="font-size: 1.5em; color: #00ff00;">🏆 PREMIO: ' + premio + '</p>' +
+    '</div>' +
+    '<p style="color: #ccc; margin-top: 30px; font-style: italic;">¡Te esperamos en el próximo sorteo!</p>' +
+  '</div>';
+  
   document.body.appendChild(div);
+  applyTwemoji(div);
+  
   html2canvas(div, { scale: 2 }).then(function(canvas) {
     const link = document.createElement('a');
-    link.download = 'GANADOR_' + (participant ? participant.name : 'sin_ganador') + '_' + animal.num + '.png';
+    link.download = 'GANADOR_' + name + '.png';
     link.href = canvas.toDataURL();
     link.click();
     document.body.removeChild(div);
@@ -1488,44 +1196,55 @@ function generateWinnerImage() {
 }
 
 function sendWinnerWhatsApp() {
-  if (!currentWinner) { alert('Primero selecciona un animal ganador'); return; }
-  const participant = currentWinner.participant;
-  const animal = currentWinner.animal;
-  const premio = currentWinner.premio;
-  const text = '🎉 *¡FELICIDADES ' + (participant ? participant.name : '') + '!* \n\nHas ganado con: ' + animal.emoji + ' N° ' + animal.num + ' - ' + animal.name + '\n\n🏆 *PREMIO:* ' + premio + '\n\n¡Te esperamos en el próximo sorteo! 🍀';
+  const name = document.getElementById('winnerNameDisplay').textContent;
+  const animalText = document.getElementById('winnerAnimalDisplay').textContent;
+  const premio = document.getElementById('winnerPrizeDisplay').textContent;
+  
+  if (name === 'Nadie participó con este animal') { alert('No hay ganador para enviar'); return; }
+  
+  const text = '🎉 *¡FELICIDADES ' + name + '!* 🎉\n\n' +
+    'Has ganado con: ' + animalText + '\n\n' +
+    '🏆 *PREMIO:* ' + premio + '\n\n' +
+    '¡Te esperamos en el próximo sorteo! 🍀';
+  
   const encoded = encodeURIComponent(text);
   window.open('https://wa.me/?text=' + encoded, '_blank');
 }
+
+// ============ PESTAÑA RED ZONE ============
 
 function showFirstConfirmation() { document.getElementById('firstConfirmation').classList.add('active'); }
 function hideFirstConfirmation() { document.getElementById('firstConfirmation').classList.remove('active'); }
 function showSecondConfirmation() { hideFirstConfirmation(); document.getElementById('secondConfirmation').classList.add('active'); document.getElementById('confirmText').value = ''; document.getElementById('deleteError').style.display = 'none'; }
 function hideSecondConfirmation() { document.getElementById('secondConfirmation').classList.remove('active'); }
 
-function confirmDeleteAll() {
+async function confirmDeleteAll() {
   const text = document.getElementById('confirmText').value.trim().toUpperCase();
   if (text === 'BORRAR' || text === 'ELIMINAR') {
-    localStorage.removeItem('casino_participants');
-    localStorage.removeItem('casino_evento');
-    participants = {};
-    currentSorteo = {};
-    currentWinner = null;
-    currentWinnerNum = null;
-    isAdminLoggedIn = false;
-    alert('✅ Todos los datos han sido eliminados');
+    if (window.getDocs && window.deleteDoc) {
+      const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
+      const deletePromises = querySnapshot.docs.map(function(doc) { return window.deleteDoc(window.doc(window.db, "participantes", doc.id)); });
+      await Promise.all(deletePromises);
+    }
+    
+    alert('✅ Todos los datos han sido eliminados de la base de datos');
     hideSecondConfirmation();
     document.getElementById('adminPanel').classList.remove('active');
+    isAdminLoggedIn = false;
     updateAdminUI();
-    renderGrid();
     location.reload();
   } else {
     document.getElementById('deleteError').style.display = 'block';
   }
 }
 
+// ============ EVENT LISTENERS ============
+
 document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === e.currentTarget) closeModal(); });
 document.getElementById('participantName').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmParticipation(); });
 document.getElementById('adminPassword').addEventListener('keypress', function(e) { if (e.key === 'Enter') verifyAdminPassword(); });
+
+// ============ INICIALIZAR ============
 
 renderGrid();
 updateAdminUI();
