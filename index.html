@@ -9,190 +9,87 @@
 
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     background: radial-gradient(ellipse at top, #1a0a2e 0%, #0d0015 100%);
-    min-height: 100vh;
-    padding: 15px;
-    font-family: 'Georgia', 'Times New Roman', serif;
-    position: relative;
-    overflow-x: hidden;
-    color: #fff;
+    min-height: 100vh; padding: 15px; font-family: 'Georgia', 'Times New Roman', serif;
+    position: relative; overflow-x: hidden; color: #fff;
   }
-
-  img.emoji {
-    height: 1em;
-    width: 1em;
-    margin: 0 .05em 0 .1em;
-    vertical-align: -0.1em;
-  }
-
+  img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; }
   body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background: repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(255, 215, 0, 0.03) 50px, rgba(255, 215, 0, 0.03) 51px);
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
   }
-
   .casino-lights {
     position: fixed; top: 0; left: 0; right: 0; height: 8px;
     background: repeating-linear-gradient(90deg, #ff0000 0px, #ff0000 20px, #ffd700 20px, #ffd700 40px, #00ff00 40px, #00ff00 60px, #0000ff 60px, #0000ff 80px);
-    animation: lightsBlink 1s infinite; z-index: 100;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    animation: lightsBlink 1s infinite; z-index: 100; box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
   }
   .casino-lights-bottom {
     position: fixed; bottom: 0; left: 0; right: 0; height: 8px;
     background: repeating-linear-gradient(90deg, #ff0000 0px, #ff0000 20px, #ffd700 20px, #ffd700 40px, #00ff00 40px, #00ff00 60px, #0000ff 60px, #0000ff 80px);
-    animation: lightsBlink 1s infinite; z-index: 100;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    animation: lightsBlink 1s infinite; z-index: 100; box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
   }
   @keyframes lightsBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
   .admin-link {
-    display: block;
-    text-align: right;
-    font-size: 0.7em;
-    color: rgba(255, 215, 0, 0.2);
-    text-decoration: none;
-    cursor: pointer;
-    padding: 5px 10px;
-    margin-bottom: 5px;
-    transition: all 0.3s;
-    letter-spacing: 1px;
-    position: relative;
-    z-index: 1;
+    display: block; text-align: right; font-size: 0.7em; color: rgba(255, 215, 0, 0.2);
+    text-decoration: none; cursor: pointer; padding: 5px 10px; margin-bottom: 5px;
+    transition: all 0.3s; letter-spacing: 1px; position: relative; z-index: 1;
   }
   .admin-link:hover { color: rgba(255, 215, 0, 0.6); }
 
   .admin-panel-btn {
-    display: none;
-    float: right;
-    background: linear-gradient(145deg, #ffd700 0%, #ff8c00 100%);
-    color: #000;
-    border: 2px solid #fff;
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-weight: bold;
-    font-family: 'Georgia', serif;
-    font-size: 0.85em;
-    cursor: pointer;
-    margin-bottom: 10px;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-    transition: all 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    position: relative;
-    z-index: 1;
+    display: none; float: right; background: linear-gradient(145deg, #ffd700 0%, #ff8c00 100%);
+    color: #000; border: 2px solid #fff; padding: 8px 20px; border-radius: 20px;
+    font-weight: bold; font-family: 'Georgia', serif; font-size: 0.85em; cursor: pointer;
+    margin-bottom: 10px; box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); transition: all 0.3s;
+    text-transform: uppercase; letter-spacing: 2px; position: relative; z-index: 1;
   }
   .admin-panel-btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
 
-  .title-container {
-    text-align: center;
-    margin: 10px 0 15px;
-    position: relative;
-    z-index: 1;
-    clear: both;
-  }
-
+  .title-container { text-align: center; margin: 10px 0 15px; position: relative; z-index: 1; clear: both; }
   h1 {
-    font-size: 1.6em;
-    color: #ffd700;
+    font-size: 1.6em; color: #ffd700;
     text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00, 3px 3px 0 #8b0000;
-    letter-spacing: 2px;
-    font-weight: bold;
-    animation: neonPulse 2s ease-in-out infinite;
-    line-height: 1.2;
+    letter-spacing: 2px; font-weight: bold; animation: neonPulse 2s ease-in-out infinite; line-height: 1.2;
   }
-
   .title-line-2 {
-    font-size: 1.4em;
-    color: #ffd700;
+    font-size: 1.4em; color: #ffd700;
     text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00, 3px 3px 0 #8b0000;
-    letter-spacing: 3px;
-    font-weight: bold;
-    animation: neonPulse 2s ease-in-out infinite;
-    display: block;
-    margin-top: 3px;
+    letter-spacing: 3px; font-weight: bold; animation: neonPulse 2s ease-in-out infinite; display: block; margin-top: 3px;
   }
-
   @keyframes neonPulse {
     0%, 100% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00, 3px 3px 0 #8b0000; }
     50% { text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c00, 0 0 60px #ff4500, 3px 3px 0 #8b0000; }
   }
+  .subtitle { text-align: center; color: #ffd700; margin-bottom: 20px; font-size: 1em; font-style: italic; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); position: relative; z-index: 1; }
+  .casino-decoration { text-align: center; font-size: 1.8em; margin-bottom: 15px; position: relative; z-index: 1; letter-spacing: 10px; }
 
-  .subtitle {
-    text-align: center;
-    color: #ffd700;
-    margin-bottom: 20px;
-    font-size: 1em;
-    font-style: italic;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-    position: relative;
-    z-index: 1;
-  }
-
-  .casino-decoration {
-    text-align: center;
-    font-size: 1.8em;
-    margin-bottom: 15px;
-    position: relative;
-    z-index: 1;
-    letter-spacing: 10px;
-  }
-
-  .grid-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    position: relative;
-    z-index: 1;
-  }
-
+  .grid-container { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 1; }
   .top-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
   .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 
   .animal-card {
     background: linear-gradient(145deg, #8b0000 0%, #4a0000 50%, #2d0000 100%);
-    border: 3px solid #ffd700;
-    border-radius: 15px;
-    padding: 12px 8px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+    border: 3px solid #ffd700; border-radius: 15px; padding: 12px 8px; text-align: center;
+    cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5);
   }
-
   .animal-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background: linear-gradient(135deg, transparent 40%, rgba(255, 215, 0, 0.1) 50%, transparent 60%);
     animation: shine 3s infinite;
   }
-
   @keyframes shine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-
   .animal-card:hover:not(.taken) {
     transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 0 60px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.2);
-    border-color: #fff;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 0 60px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.2); border-color: #fff;
   }
-
   .animal-card:active:not(.taken) { transform: translateY(2px) scale(0.98); }
-
   .animal-card.taken {
-    background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
-    border-color: #555;
-    cursor: not-allowed;
-    opacity: 0.4;
-    filter: grayscale(100%);
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+    background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%); border-color: #555;
+    cursor: not-allowed; opacity: 0.4; filter: grayscale(100%); box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
   }
   .animal-card.taken:hover { transform: none; }
 
@@ -201,54 +98,34 @@
   .animal-name { font-size: 0.78em; color: #fff; font-weight: bold; text-shadow: 1px 1px 0 #000; position: relative; z-index: 1; text-transform: uppercase; text-align: center; letter-spacing: -0.3px; white-space: nowrap; display: block; width: 100%; line-height: 1.1; }
 
   .taken-label {
-    display: none;
-    position: absolute;
-    top: 50%; left: 50%;
+    display: none; position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%) rotate(-15deg);
-    background: linear-gradient(145deg, #000, #333);
-    color: #ff0000;
-    padding: 8px 15px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 1.2em;
-    border: 3px solid #ff0000;
-    white-space: nowrap;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
-    z-index: 10;
-    text-shadow: 0 0 10px #ff0000;
-    letter-spacing: 2px;
+    background: linear-gradient(145deg, #000, #333); color: #ff0000; padding: 8px 15px;
+    border-radius: 10px; font-weight: bold; font-size: 1.2em; border: 3px solid #ff0000;
+    white-space: nowrap; box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); z-index: 10;
+    text-shadow: 0 0 10px #ff0000; letter-spacing: 2px;
   }
   .animal-card.taken .taken-label { display: block; animation: stamp 0.3s ease; }
   @keyframes stamp { 0% { transform: translate(-50%, -50%) rotate(-15deg) scale(2); opacity: 0; } 100% { transform: translate(-50%, -50%) rotate(-15deg) scale(1); opacity: 1; } }
 
   .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 1000; justify-content: center; align-items: center; }
   .modal-overlay.active { display: flex; }
-
   .modal {
-    background: linear-gradient(145deg, #1a0a2e 0%, #0d0015 100%);
-    border: 4px solid #ffd700;
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 480px;
-    width: 90%;
-    text-align: center;
+    background: linear-gradient(145deg, #1a0a2e 0%, #0d0015 100%); border: 4px solid #ffd700;
+    border-radius: 20px; padding: 30px; max-width: 480px; width: 90%; text-align: center;
     animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(255, 215, 0, 0.2), inset 0 0 40px rgba(255, 215, 0, 0.1);
-    position: relative;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(255, 215, 0, 0.2), inset 0 0 40px rgba(255, 215, 0, 0.1); position: relative;
   }
   .modal::before { content: '🎰'; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); font-size: 3.5em; filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
   @keyframes popIn { from { transform: scale(0.3) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
-
   .modal h2 { color: #ffd700; margin-bottom: 15px; font-size: 1.8em; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); margin-top: 10px; letter-spacing: 2px; }
   .modal .preview-emoji { font-size: 6em; margin: 15px 0; filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8)); animation: wiggle 2s ease-in-out infinite; }
   @keyframes wiggle { 0%, 100% { transform: rotate(-5deg) scale(1); } 50% { transform: rotate(5deg) scale(1.1); } }
   .modal #previewText { font-size: 1.3em; color: #ffd700; font-weight: bold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); margin-bottom: 15px; }
-
   .modal input {
     width: 100%; padding: 15px; font-size: 1.2em; border: 3px solid #ffd700; border-radius: 10px;
     background: rgba(0, 0, 0, 0.6); color: #ffd700; margin: 15px 0; text-align: center;
-    font-family: 'Georgia', serif; font-weight: bold; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-    text-transform: uppercase;
+    font-family: 'Georgia', serif; font-weight: bold; box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5); text-transform: uppercase;
   }
   .modal input::placeholder { color: #888; font-style: italic; text-transform: none; }
   .modal input:focus { outline: none; border-color: #fff; box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), inset 0 0 20px rgba(255, 215, 0, 0.2); }
@@ -261,15 +138,9 @@
   .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
 
   .ticket {
-    background: linear-gradient(145deg, #1a0a2e 0%, #2d1b4e 100%);
-    color: #ffd700;
-    border: 3px dashed #ffd700;
-    border-radius: 15px;
-    padding: 25px;
-    margin-top: 20px;
-    text-align: left;
-    position: relative;
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), inset 0 0 30px rgba(255, 215, 0, 0.1);
+    background: linear-gradient(145deg, #1a0a2e 0%, #2d1b4e 100%); color: #ffd700;
+    border: 3px dashed #ffd700; border-radius: 15px; padding: 25px; margin-top: 20px;
+    text-align: left; position: relative; box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), inset 0 0 30px rgba(255, 215, 0, 0.1);
   }
   .ticket::before, .ticket::after { content: '🎰'; position: absolute; font-size: 2em; top: -15px; }
   .ticket::before { left: 30px; } .ticket::after { right: 30px; }
@@ -283,91 +154,32 @@
   .ticket-info strong { color: #ffd700; }
 
   .success-msg {
-    background: linear-gradient(145deg, #006400 0%, #004d00 100%);
-    border: 3px solid #00ff00;
-    border-radius: 15px;
-    padding: 18px;
-    margin: 15px 0;
-    color: #fff;
-    font-weight: bold;
-    box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
-    text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+    background: linear-gradient(145deg, #006400 0%, #004d00 100%); border: 3px solid #00ff00;
+    border-radius: 15px; padding: 18px; margin: 15px 0; color: #fff; font-weight: bold;
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.5); text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
   }
 
   .stats {
-    max-width: 1200px;
-    margin: 30px auto 0;
-    background: linear-gradient(145deg, #1a0a2e 0%, #0d0015 100%);
-    padding: 25px;
-    border-radius: 20px;
-    border: 3px solid #ffd700;
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
-    position: relative;
-    z-index: 1;
+    max-width: 1200px; margin: 30px auto 0; background: linear-gradient(145deg, #1a0a2e 0%, #0d0015 100%);
+    padding: 25px; border-radius: 20px; border: 3px solid #ffd700; box-shadow: 0 0 30px rgba(255, 215, 0, 0.4); position: relative; z-index: 1;
   }
   .stats h3 { color: #ffd700; margin-bottom: 15px; text-align: center; font-size: 1.6em; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); margin-top: 10px; letter-spacing: 2px; }
-  
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
-    max-height: none;
-    overflow-y: visible;
-  }
-  @media (min-width: 768px) {
-    .stats-grid {
-      max-height: 300px;
-      overflow-y: auto;
-    }
-  }
-
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-height: none; overflow-y: visible; }
+  @media (min-width: 768px) { .stats-grid { max-height: 300px; overflow-y: auto; } }
   .stat-item {
-    background: linear-gradient(145deg, #2d0000 0%, #1a0000 100%);
-    padding: 12px 15px;
-    border-radius: 10px;
-    font-size: 1em;
-    border: 2px solid #ffd700;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-    font-weight: bold;
-    color: #fff;
+    background: linear-gradient(145deg, #2d0000 0%, #1a0000 100%); padding: 12px 15px;
+    border-radius: 10px; font-size: 1em; border: 2px solid #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); font-weight: bold; color: #fff;
   }
 
-  .admin-panel {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(135deg, #0d0015 0%, #1a0a2e 100%);
-    z-index: 2000;
-    overflow-y: auto;
-  }
+  .admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0d0015 0%, #1a0a2e 100%); z-index: 2000; overflow-y: auto; }
   .admin-panel.active { display: block; }
-
-  .admin-header {
-    background: linear-gradient(145deg, #8b0000, #4a0000);
-    padding: 20px;
-    text-align: center;
-    border-bottom: 3px solid #ffd700;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-    position: relative;
-  }
+  .admin-header { background: linear-gradient(145deg, #8b0000, #4a0000); padding: 20px; text-align: center; border-bottom: 3px solid #ffd700; box-shadow: 0 5px 20px rgba(0,0,0,0.5); position: relative; }
   .admin-header h2 { color: #ffd700; font-size: 2em; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
-
   .btn-home {
-    position: absolute;
-    top: 50%; right: 20px;
-    transform: translateY(-50%);
-    background: linear-gradient(145deg, #ffd700 0%, #ff8c00 100%);
-    color: #000;
-    border: 3px solid #fff;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-family: 'Georgia', serif;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    position: absolute; top: 50%; right: 20px; transform: translateY(-50%);
+    background: linear-gradient(145deg, #ffd700 0%, #ff8c00 100%); color: #000; border: 3px solid #fff;
+    padding: 10px 20px; border-radius: 10px; font-weight: bold; font-family: 'Georgia', serif;
+    font-size: 0.9em; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 1px;
   }
   .btn-home:hover { transform: translateY(-50%) translateY(-3px); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
 
@@ -378,23 +190,14 @@
 
   .tab-content { display: none; padding: 30px; max-width: 1200px; margin: 0 auto; }
   .tab-content.active { display: block; }
-
   .form-group { margin-bottom: 25px; }
   .form-group label { display: block; color: #ffd700; font-weight: bold; margin-bottom: 8px; font-size: 1.1em; }
   .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; background: rgba(0,0,0,0.6); border: 2px solid #ffd700; border-radius: 8px; color: #fff; font-size: 1em; font-family: 'Georgia', serif; }
   .form-group textarea { min-height: 100px; resize: vertical; }
 
   .participant-item {
-    background: linear-gradient(145deg, #2d0000, #1a0000);
-    border: 2px solid #ffd700;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    flex-wrap: wrap;
+    background: linear-gradient(145deg, #2d0000, #1a0000); border: 2px solid #ffd700;
+    border-radius: 10px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;
   }
   .participant-info { flex: 1; min-width: 200px; display: flex; align-items: center; gap: 15px; text-align: left; }
   .participant-number { font-size: 1.8em; font-weight: bold; color: #ffd700; min-width: 50px; text-align: center; }
@@ -409,23 +212,13 @@
   .btn-image { background: #6BCB77; color: #fff; }
   .btn-small:hover { transform: translateY(-2px); box-shadow: 0 3px 10px rgba(0,0,0,0.3); }
 
-  .winner-result {
-    display: none;
-    background: linear-gradient(145deg, #006400, #004d00);
-    border: 4px solid #00ff00;
-    border-radius: 20px;
-    padding: 30px;
-    text-align: center;
-    margin-top: 30px;
-    box-shadow: 0 0 40px rgba(0, 255, 0, 0.6);
-  }
+  .winner-result { display: none; background: linear-gradient(145deg, #006400, #004d00); border: 4px solid #00ff00; border-radius: 20px; padding: 30px; text-align: center; margin-top: 30px; box-shadow: 0 0 40px rgba(0, 255, 0, 0.6); }
   .winner-result h3 { color: #00ff00; font-size: 2em; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0, 255, 0, 0.8); }
   .winner-details { color: #fff; font-size: 1.2em; margin: 10px 0; }
 
   .red-zone { background: linear-gradient(145deg, #8b0000, #4a0000); border: 4px solid #ff0000; border-radius: 20px; padding: 40px; text-align: center; margin: 20px 0; }
   .red-zone h3 { color: #ff0000; font-size: 2.5em; margin-bottom: 20px; text-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
   .danger-btn { background: linear-gradient(145deg, #ff0000, #cc0000); color: #fff; border: 3px solid #fff; padding: 20px 40px; font-size: 1.3em; margin-top: 20px; cursor: pointer; font-family: 'Georgia', serif; font-weight: bold; border-radius: 10px; }
-  
   .confirmation-box { background: rgba(0,0,0,0.6); border: 3px solid #ff0000; border-radius: 15px; padding: 30px; margin: 20px 0; display: none; }
   .confirmation-box.active { display: block; }
 
@@ -436,14 +229,8 @@
   .mini-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
   .mini-card {
     background: linear-gradient(145deg, #8b0000 0%, #4a0000 50%, #2d0000 100%);
-    border: 2px solid #ffd700;
-    border-radius: 10px;
-    padding: 8px 4px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    overflow: hidden;
+    border: 2px solid #ffd700; border-radius: 10px; padding: 8px 4px; text-align: center;
+    cursor: pointer; transition: all 0.2s ease; position: relative; overflow: hidden;
   }
   .mini-card:hover { transform: scale(1.1); border-color: #fff; box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
   .mini-card.selected { border-color: #00ff00; box-shadow: 0 0 20px rgba(0, 255, 0, 0.8); background: linear-gradient(145deg, #006400, #004d00); }
@@ -613,94 +400,65 @@
   window.onSnapshot = onSnapshot;
   window.setDoc = setDoc;
   window.getDoc = getDoc;
+
+  // ✅ FIX: Llamar a la inicialización SOLO cuando Firebase esté 100% listo
+  if (typeof window.iniciarApp === 'function') {
+    window.iniciarApp();
+  }
 </script>
 
 <script>
-// ✅ CORREGIDO: Los 8 emojis faltantes han sido restaurados
 const animals = [
-  { num: '00', name: 'Ballena',   emoji: '🐋' },
-  { num: '0',  name: 'Delfín',    emoji: '🐬' },
-  { num: '1',  name: 'Carnero',   emoji: '🐑' },
-  { num: '2',  name: 'Toro',      emoji: '🐂' },
-  { num: '3',  name: 'Ciempiés',  emoji: '🐛' },
-  { num: '4',  name: 'Alacrán',   emoji: '🦂' },
-  { num: '5',  name: 'León',      emoji: '🦁' },
-  { num: '6',  name: 'Rana',      emoji: '🐸' },
-  { num: '7',  name: 'Perico',    emoji: '🦜' },
-  { num: '8',  name: 'Ratón',     emoji: '🐭' },
-  { num: '9',  name: 'Águila',    emoji: '🦅' },
-  { num: '10', name: 'Tigre',     emoji: '🐯' },
-  { num: '11', name: 'Gato',      emoji: '🐱' },
-  { num: '12', name: 'Caballo',   emoji: '🐴' },
-  { num: '13', name: 'Mono',      emoji: '🐵' },
-  { num: '14', name: 'Paloma',    emoji: '🕊️' },
-  { num: '15', name: 'Zorro',     emoji: '🦊' },
-  { num: '16', name: 'Oso',       emoji: '🐻' },
-  { num: '17', name: 'Pavo',      emoji: '🦃' },
-  { num: '18', name: 'Burro',     emoji: '🫏' },
-  { num: '19', name: 'Chivo',     emoji: '🐐' },
-  { num: '20', name: 'Cochino',   emoji: '🐖' },
-  { num: '21', name: 'Gallo',     emoji: '🐓' },
-  { num: '22', name: 'Camello',   emoji: '🐫' },
-  { num: '23', name: 'Cebra',     emoji: '🦓' },
-  { num: '24', name: 'Iguana',    emoji: '🦎' },
-  { num: '25', name: 'Gallina',   emoji: '🐔' },
-  { num: '26', name: 'Vaca',      emoji: '🐄' },
-  { num: '27', name: 'Perro',     emoji: '🐕' },
-  { num: '28', name: 'Zamuro',    emoji: '🦇' },
-  { num: '29', name: 'Elefante',  emoji: '🐘' },
-  { num: '30', name: 'Caimán',    emoji: '🐊' },
-  { num: '31', name: 'Lapa',      emoji: '🦫' },
-  { num: '32', name: 'Ardilla',   emoji: '🐿️' },
-  { num: '33', name: 'Pescado',   emoji: '🐠' },
-  { num: '34', name: 'Venado',    emoji: '🦌' },
-  { num: '35', name: 'Jirafa',    emoji: '🦒' },
-  { num: '36', name: 'Culebra',   emoji: '🐍' }
+  { num: '00', name: 'Ballena',   emoji: '🐋' }, { num: '0',  name: 'Delfín',    emoji: '🐬' },
+  { num: '1',  name: 'Carnero',   emoji: '🐑' }, { num: '2',  name: 'Toro',      emoji: '🐂' },
+  { num: '3',  name: 'Ciempiés',  emoji: '🐛' }, { num: '4',  name: 'Alacrán',   emoji: '🦂' },
+  { num: '5',  name: 'León',      emoji: '🦁' }, { num: '6',  name: 'Rana',      emoji: '🐸' },
+  { num: '7',  name: 'Perico',    emoji: '🦜' }, { num: '8',  name: 'Ratón',     emoji: '🐭' },
+  { num: '9',  name: 'Águila',    emoji: '🦅' }, { num: '10', name: 'Tigre',     emoji: '🐯' },
+  { num: '11', name: 'Gato',      emoji: '🐱' }, { num: '12', name: 'Caballo',   emoji: '🐴' },
+  { num: '13', name: 'Mono',      emoji: '🐵' }, { num: '14', name: 'Paloma',    emoji: '🕊️' },
+  { num: '15', name: 'Zorro',     emoji: '🦊' }, { num: '16', name: 'Oso',       emoji: '🐻' },
+  { num: '17', name: 'Pavo',      emoji: '🦃' }, { num: '18', name: 'Burro',     emoji: '🫏' },
+  { num: '19', name: 'Chivo',     emoji: '🐐' }, { num: '20', name: 'Cochino',   emoji: '🐖' },
+  { num: '21', name: 'Gallo',     emoji: '🐓' }, { num: '22', name: 'Camello',   emoji: '🐫' },
+  { num: '23', name: 'Cebra',     emoji: '🦓' }, { num: '24', name: 'Iguana',    emoji: '🦎' },
+  { num: '25', name: 'Gallina',   emoji: '🐔' }, { num: '26', name: 'Vaca',      emoji: '🐄' },
+  { num: '27', name: 'Perro',     emoji: '🐕' }, { num: '28', name: 'Zamuro',    emoji: '🦇' },
+  { num: '29', name: 'Elefante',  emoji: '🐘' }, { num: '30', name: 'Caimán',    emoji: '🐊' },
+  { num: '31', name: 'Lapa',      emoji: '🦫' }, { num: '32', name: 'Ardilla',   emoji: '🐿️' },
+  { num: '33', name: 'Pescado',   emoji: '🐠' }, { num: '34', name: 'Venado',    emoji: '🦌' },
+  { num: '35', name: 'Jirafa',    emoji: '🦒' }, { num: '36', name: 'Culebra',   emoji: '🐍' }
 ];
 
 let selectedAnimal = null;
 let currentWinnerNum = null;
 let isAdminLoggedIn = false;
 let localParticipants = {};
-let firebaseUnsubscribe = null; // ✅ FIX 1: Variable para controlar el listener
+let firebaseUnsubscribe = null;
 
 function sortNumbers(a, b) {
-  if (a === '00') return -2;
-  if (a === '0') return -1;
-  if (b === '00') return 2;
-  if (b === '0') return 1;
+  if (a === '00') return -2; if (a === '0') return -1;
+  if (b === '00') return 2; if (b === '0') return 1;
   return parseInt(a) - parseInt(b);
 }
 
 function applyTwemoji(element) {
-  if (typeof twemoji !== 'undefined') {
-    twemoji.parse(element, { folder: 'svg', ext: '.svg' });
-  }
+  if (typeof twemoji !== 'undefined') { twemoji.parse(element, { folder: 'svg', ext: '.svg' }); }
 }
 
-// ✅ FIX 1 & 4: Listener único que limpia antes de dibujar
 function setupFirebaseListener() {
-  if (firebaseUnsubscribe) {
-    firebaseUnsubscribe();
-    firebaseUnsubscribe = null;
-  }
-  
+  if (firebaseUnsubscribe) { firebaseUnsubscribe(); firebaseUnsubscribe = null; }
   const container = document.getElementById('gridContainer');
   container.innerHTML = '';
   localParticipants = {};
 
   if (window.onSnapshot && window.collection && window.db) {
-    firebaseUnsubscribe = window.onSnapshot(
-      window.collection(window.db, "participantes"), 
-      (snapshot) => {
-        localParticipants = {};
-        snapshot.forEach((doc) => {
-          localParticipants[doc.id] = doc.data();
-        });
-        drawGridElements(container);
-        updateStats();
-      }
-    );
+    firebaseUnsubscribe = window.onSnapshot(window.collection(window.db, "participantes"), (snapshot) => {
+      localParticipants = {};
+      snapshot.forEach((doc) => { localParticipants[doc.id] = doc.data(); });
+      drawGridElements(container);
+      updateStats();
+    });
   } else {
     renderGrid();
   }
@@ -713,8 +471,7 @@ function renderGrid() {
 }
 
 function drawGridElements(container) {
-  container.innerHTML = ''; // ✅ FIX 4: Asegurar limpieza absoluta antes de dibujar
-  
+  container.innerHTML = ''; 
   const topRow = document.createElement('div'); topRow.className = 'top-row';
   topRow.appendChild(createCard(animals[0]));
   for (let i = 0; i < 2; i++) { const e = document.createElement('div'); e.className = 'animal-card'; e.style.visibility = 'hidden'; topRow.appendChild(e); }
@@ -733,14 +490,9 @@ function drawGridElements(container) {
   applyTwemoji(container);
 }
 
-// ✅ FIX 3: Buscar por el campo 'num' dentro de los valores, no por la clave del objeto
 function createCard(animal) {
   const card = document.createElement('div'); card.className = 'animal-card';
-  
-  const isTaken = Object.values(localParticipants).some(function(p) {
-    return p.num === animal.num;
-  });
-  
+  const isTaken = Object.values(localParticipants).some(function(p) { return p.num === animal.num; });
   card.innerHTML = '<span class="animal-emoji">' + animal.emoji + '</span>' +
     '<div class="animal-number">' + animal.num + '</div>' +
     '<div class="animal-name">' + animal.name + '</div>' +
@@ -778,28 +530,20 @@ async function confirmParticipation() {
     return;
   }
 
-  // ✅ CORRECCIÓN: Buscamos el botón de forma segura sin depender de la variable global 'event'
   const btn = document.querySelector('#modalOverlay .btn-primary');
+  if (!btn) return;
   
   btn.disabled = true; 
   btn.textContent = '⏳ REGISTRANDO...';
 
   try {
     await window.addDoc(window.collection(window.db, "participantes"), {
-      num: selectedAnimal.num,
-      name: name,
-      animalName: selectedAnimal.name,
-      emoji: selectedAnimal.emoji,
-      timestamp: new Date()
+      num: selectedAnimal.num, name: name, animalName: selectedAnimal.name,
+      emoji: selectedAnimal.emoji, timestamp: new Date()
     });
     
     const newId = 'temp_' + Date.now();
-    localParticipants[newId] = {
-      num: selectedAnimal.num,
-      name: name,
-      animalName: selectedAnimal.name,
-      emoji: selectedAnimal.emoji
-    };
+    localParticipants[newId] = { num: selectedAnimal.num, name: name, animalName: selectedAnimal.name, emoji: selectedAnimal.emoji };
     
     const successHTML = '<div class="success-msg">🎉 ¡FELICIDADES, ' + name + '!<br>Participas con el N° ' + selectedAnimal.num + ' - ' + selectedAnimal.name + ' ' + selectedAnimal.emoji + '</div>';
     const ticketHTML = '<div class="ticket"><div class="ticket-header"><h3>🎟️ TICKET DEL CASINO</h3><small>Sorteo de los 38 Animales</small></div><div class="ticket-body"><div class="ticket-emoji">' + selectedAnimal.emoji + '</div><div class="ticket-info"><p><strong>Jugador:</strong> ' + name + '</p><p><strong>N° Animal:</strong> ' + selectedAnimal.num + '</p><p><strong>Animal:</strong> ' + selectedAnimal.name + '</p><p><strong>Fecha:</strong> ' + new Date().toLocaleString('es-ES') + '</p><p><strong>ID Ticket:</strong> #' + Date.now().toString(36).toUpperCase() + '</p></div></div></div>';
@@ -809,7 +553,6 @@ async function confirmParticipation() {
     
     btn.textContent = '✅ REGISTRADO';
     
-    // ✅ Ahora este bloque SÍ se ejecutará siempre, cerrando el modal y dejando el grid listo
     setTimeout(function() { 
       closeModal(); 
       renderGrid();
@@ -818,17 +561,13 @@ async function confirmParticipation() {
   } catch (error) {
     alert("Error al guardar: " + error.message);
     const btnRetry = document.querySelector('#modalOverlay .btn-primary');
-    if (btnRetry) {
-      btnRetry.disabled = false; 
-      btnRetry.textContent = '✅ ENVIAR';
-    }
+    if (btnRetry) { btnRetry.disabled = false; btnRetry.textContent = '✅ ENVIAR'; }
   }
 }
 
 function updateStats() {
   const statsSection = document.getElementById('statsSection');
   const statsGrid = document.getElementById('statsGrid');
-  
   const keys = Object.keys(localParticipants).sort(function(a, b) {
     return sortNumbers(localParticipants[a].num, localParticipants[b].num);
   });
@@ -852,21 +591,13 @@ function openAdminLogin() {
   document.getElementById('adminPassword').value = '';
   document.getElementById('loginError').style.display = 'none';
 }
-
-function closeAdminLogin() {
-  document.getElementById('adminLoginModal').classList.remove('active');
-}
+function closeAdminLogin() { document.getElementById('adminLoginModal').classList.remove('active'); }
 
 function verifyAdminPassword() {
   const password = document.getElementById('adminPassword').value;
   if (password === '111180') {
-    isAdminLoggedIn = true;
-    updateAdminUI();
-    closeAdminLogin();
-    openAdminPanel();
-  } else {
-    document.getElementById('loginError').style.display = 'block';
-  }
+    isAdminLoggedIn = true; updateAdminUI(); closeAdminLogin(); openAdminPanel();
+  } else { document.getElementById('loginError').style.display = 'block'; }
 }
 
 function updateAdminUI() {
@@ -876,22 +607,15 @@ function updateAdminUI() {
 
 function openAdminPanel() {
   document.getElementById('adminPanel').classList.add('active');
-  loadSorteoData();
-  renderParticipantsList();
-  renderMiniGrid();
+  loadSorteoData(); renderParticipantsList(); renderMiniGrid();
 }
-
-function goToHome() {
-  document.getElementById('adminPanel').classList.remove('active');
-}
+function goToHome() { document.getElementById('adminPanel').classList.remove('active'); }
 
 function switchTab(tabName) {
   document.querySelectorAll('.tab-content').forEach(function(tab) { tab.classList.remove('active'); });
   document.querySelectorAll('.tab-btn').forEach(function(btn) { btn.classList.remove('active'); });
-  
   document.getElementById('tab-' + tabName).classList.add('active');
   event.target.classList.add('active');
-  
   if (tabName === 'participantes') renderParticipantsList();
   if (tabName === 'ganadores') renderMiniGrid();
 }
@@ -900,14 +624,10 @@ function saveSorteo() {
   const fecha = document.getElementById('sorteoFecha').value;
   const hora = document.getElementById('sorteoHora').value;
   const premio = document.getElementById('sorteoPremio').value;
-  
   const data = { fecha: fecha, hora: hora, premio: premio, estado: 'activo' };
   window.setDoc(window.doc(window.db, "config", "sorteo_actual"), data).then(function() {
-    alert('✅ Sorteo guardado correctamente en la nube');
-    loadSorteoData();
-  }).catch(function(error) {
-    alert("Error: " + error.message);
-  });
+    alert('✅ Sorteo guardado correctamente en la nube'); loadSorteoData();
+  }).catch(function(error) { alert("Error: " + error.message); });
 }
 
 function loadSorteoData() {
@@ -918,7 +638,6 @@ function loadSorteoData() {
         document.getElementById('sorteoFecha').value = data.fecha || '';
         document.getElementById('sorteoHora').value = data.hora || '';
         document.getElementById('sorteoPremio').value = data.premio || '';
-        
         document.getElementById('infoFecha').textContent = data.fecha || 'No definida';
         document.getElementById('infoHora').textContent = data.hora || 'No definida';
         document.getElementById('infoPremio').textContent = data.premio || 'No definido';
@@ -932,63 +651,37 @@ function publishSorteo() {
   const fecha = document.getElementById('sorteoFecha').value;
   const hora = document.getElementById('sorteoHora').value;
   const premio = document.getElementById('sorteoPremio').value;
-  
   if (!fecha) { alert('Primero guarda la información del sorteo'); return; }
-  
-  const text = '🎰 *CASINO DE ANIMALITOS - LOTTO ACTIVO* \n\n' +
-    '📅 Fecha: ' + fecha + '\n' +
-    '⏰ Hora: ' + hora + '\n' +
-    '🏆 Premio: ' + premio + '\n\n' +
-    '¡Participa ahora! 🍀';
-  
-  navigator.clipboard.writeText(text).then(function() {
-    alert('📋 Texto copiado al portapapeles');
-  });
+  const text = '🎰 *CASINO DE ANIMALITOS - LOTTO ACTIVO* \n\n📅 Fecha: ' + fecha + '\n⏰ Hora: ' + hora + '\n🏆 Premio: ' + premio + '\n\n¡Participa ahora! 🍀';
+  navigator.clipboard.writeText(text).then(function() { alert('📋 Texto copiado al portapapeles'); });
 }
 
 async function renderParticipantsList() {
   const container = document.getElementById('participantsList');
   if (!window.getDocs) { container.innerHTML = '<p style="text-align: center; color: #ccc; padding: 40px;">Cargando Firebase...</p>'; return; }
-  
   const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
   const list = [];
   querySnapshot.forEach(function(doc) { list.push({ id: doc.id, ...doc.data() }); });
-  
   list.sort(function(a, b) { return sortNumbers(a.num, b.num); });
 
-  if (list.length === 0) {
-    container.innerHTML = '<p style="text-align: center; color: #ccc; padding: 40px;">No hay participantes registrados</p>';
-    return;
-  }
+  if (list.length === 0) { container.innerHTML = '<p style="text-align: center; color: #ccc; padding: 40px;">No hay participantes registrados</p>'; return; }
   
   let html = '';
   list.forEach(function(p) {
-    html += '<div class="participant-item">' +
-      '<div class="participant-info">' +
-        '<div class="participant-number">' + p.num + '</div>' +
-        '<div class="participant-emoji">' + p.emoji + '</div>' +
-        '<div class="participant-animal">' + p.animalName + '</div>' +
-        '<div class="participant-name">' + p.name + '</div>' +
-      '</div>' +
-      '<div class="participant-actions">' +
-        '<button class="btn-small btn-image" onclick="generateParticipantImage(\'' + p.id + '\', \'' + p.num + '\', \'' + p.name + '\', \'' + p.emoji + '\', \'' + p.animalName + '\')">🖼️ Imagen</button>' +
-        '<button class="btn-small btn-delete" onclick="deleteParticipant(\'' + p.id + '\', \'' + p.num + '\')">🗑️ Eliminar</button>' +
-      '</div>' +
-    '</div>';
+    html += '<div class="participant-item"><div class="participant-info">' +
+      '<div class="participant-number">' + p.num + '</div><div class="participant-emoji">' + p.emoji + '</div>' +
+      '<div class="participant-animal">' + p.animalName + '</div><div class="participant-name">' + p.name + '</div></div>' +
+      '<div class="participant-actions"><button class="btn-small btn-image" onclick="generateParticipantImage(\'' + p.id + '\', \'' + p.num + '\', \'' + p.name + '\', \'' + p.emoji + '\', \'' + p.animalName + '\')">🖼️ Imagen</button>' +
+      '<button class="btn-small btn-delete" onclick="deleteParticipant(\'' + p.id + '\', \'' + p.num + '\')">🗑️ Eliminar</button></div></div>';
   });
-  
   container.innerHTML = html;
   applyTwemoji(container);
 }
 
 async function deleteParticipant(id, num) {
   if (confirm('¿Eliminar a este participante del animal ' + num + '? El animal quedará disponible nuevamente de forma inmediata.')) {
-    try {
-      await window.deleteDoc(window.doc(window.db, "participantes", id));
-      renderParticipantsList();
-    } catch (error) {
-      alert("Error al eliminar: " + error.message);
-    }
+    try { await window.deleteDoc(window.doc(window.db, "participantes", id)); renderParticipantsList(); } 
+    catch (error) { alert("Error al eliminar: " + error.message); }
   }
 }
 
@@ -997,87 +690,55 @@ async function generateParticipantImage(id, num, name, emoji, animalName) {
   const participantAnimals = [];
   querySnapshot.forEach(function(doc) {
     const data = doc.data();
-    if (data.name === name) {
-      participantAnimals.push({ num: data.num, emoji: data.emoji, animalName: data.animalName });
-    }
+    if (data.name === name) { participantAnimals.push({ num: data.num, emoji: data.emoji, animalName: data.animalName }); }
   });
-  
   if (participantAnimals.length > 1) {
     const options = participantAnimals.map(function(pa) { return pa.num + ' ' + pa.emoji + ' ' + pa.animalName; }).join('\n');
     const choice = confirm(name + ' tiene ' + participantAnimals.length + ' animalitos:\n\n' + options + '\n\nAceptar: Generar imagen de TODOS\nCancelar: Generar solo este (' + num + ')');
-    if (choice) {
-      generateImageForMultiple(name, participantAnimals);
-    } else {
-      generateSingleImage(name, num, emoji, animalName);
-    }
-  } else {
-    generateSingleImage(name, num, emoji, animalName);
-  }
+    if (choice) generateImageForMultiple(name, participantAnimals);
+    else generateSingleImage(name, num, emoji, animalName);
+  } else { generateSingleImage(name, num, emoji, animalName); }
 }
 
 function generateSingleImage(name, num, emoji, animalName) {
-  const div = document.createElement('div');
-  div.className = 'image-preview';
+  const div = document.createElement('div'); div.className = 'image-preview';
   div.innerHTML = '<div style="background: linear-gradient(135deg, #1a0a2e, #0d0015); padding: 40px; border-radius: 20px; border: 4px solid #ffd700;">' +
     '<div style="font-size: 3em; margin-bottom: 20px;">🎰</div>' +
     '<h2 style="color: #ffd700; margin-bottom: 30px; text-shadow: 0 0 20px rgba(255,215,0,0.8);">CASINO DE ANIMALITOS</h2>' +
     '<div style="font-size: 6em; margin: 30px 0;">' + emoji + '</div>' +
     '<p style="color: #fff; font-size: 1.5em; margin: 10px 0;"><strong>' + name + '</strong></p>' +
     '<p style="color: #ffd700; font-size: 1.3em;">N° ' + num + ' - ' + animalName + '</p>' +
-    '<p style="color: #ccc; margin-top: 30px; font-size: 0.9em;">Lotto Activo</p>' +
-  '</div>';
-  
-  document.body.appendChild(div);
-  applyTwemoji(div);
-  
+    '<p style="color: #ccc; margin-top: 30px; font-size: 0.9em;">Lotto Activo</p></div>';
+  document.body.appendChild(div); applyTwemoji(div);
   html2canvas(div, { scale: 2 }).then(function(canvas) {
-    const link = document.createElement('a');
-    link.download = name + '_' + num + '.png';
-    link.href = canvas.toDataURL();
-    link.click();
-    document.body.removeChild(div);
+    const link = document.createElement('a'); link.download = name + '_' + num + '.png';
+    link.href = canvas.toDataURL(); link.click(); document.body.removeChild(div);
   });
 }
 
 function generateImageForMultiple(name, animalsList) {
-  const div = document.createElement('div');
-  div.className = 'image-preview';
-  
+  const div = document.createElement('div'); div.className = 'image-preview';
   let animalsHtml = animalsList.map(function(a) {
     return '<div style="margin: 15px 0; padding: 10px; background: rgba(255,215,0,0.1); border-radius: 10px;">' +
       '<span style="font-size: 2.5em;">' + a.emoji + '</span>' +
-      '<span style="color: #ffd700; font-size: 1.2em; margin-left: 10px;">N° ' + a.num + ' - ' + a.animalName + '</span>' +
-    '</div>';
+      '<span style="color: #ffd700; font-size: 1.2em; margin-left: 10px;">N° ' + a.num + ' - ' + a.animalName + '</span></div>';
   }).join('');
-  
   div.innerHTML = '<div style="background: linear-gradient(135deg, #1a0a2e, #0d0015); padding: 40px; border-radius: 20px; border: 4px solid #ffd700;">' +
     '<div style="font-size: 3em; margin-bottom: 20px;">🎰</div>' +
     '<h2 style="color: #ffd700; margin-bottom: 30px; text-shadow: 0 0 20px rgba(255,215,0,0.8);">CASINO DE ANIMALITOS</h2>' +
-    '<p style="color: #fff; font-size: 1.8em; margin-bottom: 30px;"><strong>' + name + '</strong></p>' +
-    animalsHtml +
-    '<p style="color: #ccc; margin-top: 30px; font-size: 0.9em;">Lotto Activo</p>' +
-  '</div>';
-  
-  document.body.appendChild(div);
-  applyTwemoji(div);
-  
+    '<p style="color: #fff; font-size: 1.8em; margin-bottom: 30px;"><strong>' + name + '</strong></p>' + animalsHtml +
+    '<p style="color: #ccc; margin-top: 30px; font-size: 0.9em;">Lotto Activo</p></div>';
+  document.body.appendChild(div); applyTwemoji(div);
   html2canvas(div, { scale: 2 }).then(function(canvas) {
-    const link = document.createElement('a');
-    link.download = name + '_todos.png';
-    link.href = canvas.toDataURL();
-    link.click();
-    document.body.removeChild(div);
+    const link = document.createElement('a'); link.download = name + '_todos.png';
+    link.href = canvas.toDataURL(); link.click(); document.body.removeChild(div);
   });
 }
 
-// ✅ FIX 2: Función blindada con try-catch y console.log para depuración
 async function generateWhatsAppList() {
   console.log("📱 Iniciando generación de lista WhatsApp...");
   try {
-    let fecha = 'Por definir';
-    let hora = 'Por definir';
-    let premio = 'Por definir';
-    
+    let fecha = 'Por definir', hora = 'Por definir', premio = 'Por definir';
     if (window.getDoc && window.doc && window.db) {
       try {
         const docSnap = await window.getDoc(window.doc(window.db, "config", "sorteo_actual"));
@@ -1087,41 +748,19 @@ async function generateWhatsAppList() {
           if (data.hora) hora = data.hora;
           if (data.premio) premio = data.premio;
         }
-      } catch (e) { console.error("Error config:", e); }
+      } catch (e) { console.warn("Config no disponible, usando valores por defecto", e); }
     }
 
-    let list = [];
-    if (window.getDocs && window.collection && window.db) {
-      try {
-        const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
-        querySnapshot.forEach(function(doc) { list.push(doc.data()); });
-        console.log("Participantes de Firebase:", list.length);
-      } catch (e) { console.error("Error Firebase:", e); }
-    }
-    
-    if (list.length === 0 && Object.keys(localParticipants).length > 0) {
-      console.log("Usando datos locales:", Object.keys(localParticipants).length);
-      list = Object.values(localParticipants);
-    }
-
-    list.sort(function(a, b) { return sortNumbers(a.num, b.num); });
+    // ✅ FIX: Usar localParticipants directamente para que sea INSTANTÁNEO
+    let list = Object.values(localParticipants);
     console.log("Total participantes a mostrar:", list.length);
 
-    if (list.length === 0) { 
-      alert('⚠️ No hay participantes registrados aún.'); 
-      return; 
-    }
+    if (list.length === 0) { alert('⚠️ No hay participantes registrados aún.'); return; }
+    list.sort(function(a, b) { return sortNumbers(a.num, b.num); });
 
     let text = '🎰 *CASINO DE ANIMALITOS - LOTTO ACTIVO* 🎰\n\n';
-    text += '📅 Fecha: ' + fecha + '\n';
-    text += '⏰ Hora: ' + hora + '\n';
-    text += '🏆 Premio: ' + premio + '\n\n';
-    text += '📋 *PARTICIPANTES:*\n\n';
-    
-    list.forEach(function(p) {
-      text += p.emoji + ' *' + p.num + '* ' + p.animalName + ' - ' + p.name + '\n';
-    });
-    
+    text += '📅 Fecha: ' + fecha + '\n⏰ Hora: ' + hora + '\n🏆 Premio: ' + premio + '\n\n📋 *PARTICIPANTES:*\n\n';
+    list.forEach(function(p) { text += p.emoji + ' *' + p.num + '* ' + p.animalName + ' - ' + p.name + '\n'; });
     text += '\n¡Buena suerte a todos! 🍀';
 
     const existingModal = document.querySelector('.whatsapp-modal-overlay');
@@ -1130,30 +769,21 @@ async function generateWhatsAppList() {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay whatsapp-modal-overlay';
     modal.style.display = 'flex';
-    modal.innerHTML = `
-      <div class="modal" style="max-width: 600px;">
-        <h2>📱 LISTA PARA WHATSAPP</h2>
-        <div class="whatsapp-list" style="max-height: 300px; overflow-y: auto; text-align: left; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin: 15px 0; white-space: pre-wrap; font-family: monospace; font-size: 0.9em;">${text}</div>
-        <button class="btn btn-primary" id="btnCopyWA">📋 COPIAR</button>
-        <button class="btn btn-secondary" id="btnSendWA">💬 ENVIAR WHATSAPP</button>
-        <button class="btn btn-secondary" onclick="this.closest('.modal-overlay').remove()">❌ CERRAR</button>
-      </div>
-    `;
+    modal.innerHTML = '<div class="modal" style="max-width: 600px;">' +
+      '<h2>📱 LISTA PARA WHATSAPP</h2>' +
+      '<div class="whatsapp-list" style="max-height: 300px; overflow-y: auto; text-align: left; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin: 15px 0; white-space: pre-wrap; font-family: monospace; font-size: 0.9em;">' + text + '</div>' +
+      '<button class="btn btn-primary" id="btnCopyWA">📋 COPIAR</button>' +
+      '<button class="btn btn-secondary" id="btnSendWA">💬 ENVIAR WHATSAPP</button>' +
+      '<button class="btn btn-secondary" onclick="this.closest(\'.modal-overlay\').remove()">❌ CERRAR</button></div>';
     
     document.body.appendChild(modal);
-    console.log("Modal creado exitosamente");
 
     document.getElementById('btnCopyWA').onclick = function() {
-      navigator.clipboard.writeText(text).then(function() { 
-        alert('✅ Lista copiada al portapapeles'); 
-      }).catch(function() {
-        alert('❌ Error al copiar. Intenta seleccionando el texto manualmente.');
-      });
+      navigator.clipboard.writeText(text).then(function() { alert('✅ Lista copiada al portapapeles'); })
+      .catch(function() { alert('❌ Error al copiar. Intenta seleccionando el texto manualmente.'); });
     };
-
     document.getElementById('btnSendWA').onclick = function() {
-      const encoded = encodeURIComponent(text);
-      window.open('https://wa.me/?text=' + encoded, '_blank');
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
     };
   } catch (error) {
     console.error("Error grave en generateWhatsAppList:", error);
@@ -1164,15 +794,11 @@ async function generateWhatsAppList() {
 function renderMiniGrid() {
   const container = document.getElementById('miniGridContainer');
   container.innerHTML = '';
-
   const topRow = document.createElement('div'); topRow.className = 'mini-row';
   topRow.appendChild(createMiniCard(animals[0]));
-  for (let i = 0; i < 2; i++) {
-    const empty = document.createElement('div'); empty.className = 'mini-card'; empty.style.visibility = 'hidden'; topRow.appendChild(empty);
-  }
+  for (let i = 0; i < 2; i++) { const empty = document.createElement('div'); empty.className = 'mini-card'; empty.style.visibility = 'hidden'; topRow.appendChild(empty); }
   topRow.appendChild(createMiniCard(animals[1]));
   container.appendChild(topRow);
-
   const remaining = animals.slice(2);
   for (let row = 0; row < 9; row++) {
     const rowDiv = document.createElement('div'); rowDiv.className = 'mini-row';
@@ -1186,8 +812,7 @@ function renderMiniGrid() {
 }
 
 function createMiniCard(animal) {
-  const card = document.createElement('div');
-  card.className = 'mini-card';
+  const card = document.createElement('div'); card.className = 'mini-card';
   if (currentWinnerNum === animal.num) card.classList.add('selected');
   card.innerHTML = '<span class="mini-emoji">' + animal.emoji + '</span><div class="mini-number">' + animal.num + '</div>';
   card.onclick = function() { selectWinner(animal.num); };
@@ -1195,24 +820,17 @@ function createMiniCard(animal) {
 }
 
 async function selectWinner(num) {
-  currentWinnerNum = num;
-  renderMiniGrid();
-  
+  currentWinnerNum = num; renderMiniGrid();
   const animal = animals.find(function(a) { return a.num === num; });
-  
   let winner = null;
   if (window.getDocs) {
     const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
-    querySnapshot.forEach(function(doc) {
-      if (doc.data().num === num) winner = doc.data();
-    });
+    querySnapshot.forEach(function(doc) { if (doc.data().num === num) winner = doc.data(); });
   }
-  
   const display = document.getElementById('winnerResult');
   if (winner) {
     document.getElementById('winnerNameDisplay').textContent = winner.name;
     document.getElementById('winnerAnimalDisplay').textContent = animal.num + ' - ' + animal.name + ' ' + animal.emoji;
-    
     let premio = 'Por definir';
     if (window.getDoc) {
       const configDoc = await window.getDoc(window.doc(window.db, "config", "sorteo_actual"));
@@ -1233,32 +851,20 @@ function generateWinnerImage() {
   const name = document.getElementById('winnerNameDisplay').textContent;
   const animalText = document.getElementById('winnerAnimalDisplay').textContent;
   const premio = document.getElementById('winnerPrizeDisplay').textContent;
-  
   if (name === 'Nadie participó con este animal') { alert('No hay ganador para generar imagen'); return; }
-  
-  const div = document.createElement('div');
-  div.className = 'image-preview';
+  const div = document.createElement('div'); div.className = 'image-preview';
   div.innerHTML = '<div style="background: linear-gradient(135deg, #006400, #004d00); padding: 40px; border-radius: 20px; border: 4px solid #00ff00; color: #fff;">' +
     '<div style="font-size: 3em; margin-bottom: 20px;">🎉</div>' +
     '<h2 style="color: #00ff00; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0,255,0,0.8);">¡FELICIDADES!</h2>' +
     '<p style="font-size: 1.8em; margin-bottom: 30px;"><strong>' + name + '</strong></p>' +
     '<div style="font-size: 6em; margin: 30px 0;">' + animalText.split(' ').pop() + '</div>' +
     '<p style="color: #ffd700; font-size: 1.3em; margin-bottom: 20px;">Ganó con: ' + animalText + '</p>' +
-    '<div style="background: rgba(0,255,0,0.2); padding: 20px; border-radius: 10px; margin: 20px 0;">' +
-      '<p style="font-size: 1.5em; color: #00ff00;">🏆 PREMIO: ' + premio + '</p>' +
-    '</div>' +
-    '<p style="color: #ccc; margin-top: 30px; font-style: italic;">¡Te esperamos en el próximo sorteo!</p>' +
-  '</div>';
-  
-  document.body.appendChild(div);
-  applyTwemoji(div);
-  
+    '<div style="background: rgba(0,255,0,0.2); padding: 20px; border-radius: 10px; margin: 20px 0;"><p style="font-size: 1.5em; color: #00ff00;">🏆 PREMIO: ' + premio + '</p></div>' +
+    '<p style="color: #ccc; margin-top: 30px; font-style: italic;">¡Te esperamos en el próximo sorteo!</p></div>';
+  document.body.appendChild(div); applyTwemoji(div);
   html2canvas(div, { scale: 2 }).then(function(canvas) {
-    const link = document.createElement('a');
-    link.download = 'GANADOR_' + name + '.png';
-    link.href = canvas.toDataURL();
-    link.click();
-    document.body.removeChild(div);
+    const link = document.createElement('a'); link.download = 'GANADOR_' + name + '.png';
+    link.href = canvas.toDataURL(); link.click(); document.body.removeChild(div);
   });
 }
 
@@ -1266,16 +872,9 @@ function sendWinnerWhatsApp() {
   const name = document.getElementById('winnerNameDisplay').textContent;
   const animalText = document.getElementById('winnerAnimalDisplay').textContent;
   const premio = document.getElementById('winnerPrizeDisplay').textContent;
-  
   if (name === 'Nadie participó con este animal') { alert('No hay ganador para enviar'); return; }
-  
-  const text = ' *¡FELICIDADES ' + name + '!* 🎉\n\n' +
-    'Has ganado con: ' + animalText + '\n\n' +
-    '🏆 *PREMIO:* ' + premio + '\n\n' +
-    '¡Te esperamos en el próximo sorteo! ';
-  
-  const encoded = encodeURIComponent(text);
-  window.open('https://wa.me/?text=' + encoded, '_blank');
+  const text = ' *¡FELICIDADES ' + name + '!* 🎉\n\nHas ganado con: ' + animalText + '\n\n🏆 *PREMIO:* ' + premio + '\n\n¡Te esperamos en el próximo sorteo! ';
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
 }
 
 function showFirstConfirmation() { document.getElementById('firstConfirmation').classList.add('active'); }
@@ -1291,33 +890,24 @@ async function confirmDeleteAll() {
       const deletePromises = querySnapshot.docs.map(function(doc) { return window.deleteDoc(window.doc(window.db, "participantes", doc.id)); });
       await Promise.all(deletePromises);
     }
-    
     alert('✅ Todos los datos han sido eliminados de la base de datos');
-    hideSecondConfirmation();
-    document.getElementById('adminPanel').classList.remove('active');
-    isAdminLoggedIn = false;
-    updateAdminUI();
-    location.reload();
-  } else {
-    document.getElementById('deleteError').style.display = 'block';
-  }
+    hideSecondConfirmation(); document.getElementById('adminPanel').classList.remove('active');
+    isAdminLoggedIn = false; updateAdminUI(); location.reload();
+  } else { document.getElementById('deleteError').style.display = 'block'; }
 }
 
 document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === e.currentTarget) closeModal(); });
-
 document.getElementById('participantName').addEventListener('input', function(e) {
-  const cursorPos = this.selectionStart;
-  this.value = this.value.toUpperCase();
-  this.setSelectionRange(cursorPos, cursorPos);
+  const cursorPos = this.selectionStart; this.value = this.value.toUpperCase(); this.setSelectionRange(cursorPos, cursorPos);
 });
-
 document.getElementById('participantName').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmParticipation(); });
 document.getElementById('adminPassword').addEventListener('keypress', function(e) { if (e.key === 'Enter') verifyAdminPassword(); });
 
-// ✅ INICIALIZACIÓN FINAL LIMPIA
-setupFirebaseListener();
-updateAdminUI();
+// ✅ FIX: Definimos la función globalmente para que el módulo de Firebase la llame cuando esté 100% listo
+window.iniciarApp = function() {
+  setupFirebaseListener();
+  updateAdminUI();
+};
 </script>
-
 </body>
 </html>
