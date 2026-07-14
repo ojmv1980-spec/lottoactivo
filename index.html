@@ -761,12 +761,17 @@ async function confirmParticipation() {
     });
     
     const successHTML = '<div class="success-msg">🎉 ¡FELICIDADES, ' + name + '!<br>Participas con el N° ' + selectedAnimal.num + ' - ' + selectedAnimal.name + ' ' + selectedAnimal.emoji + '</div>';
-    const ticketHTML = '<div class="ticket"><div class="ticket-header"><h3>🎟️ TICKET DEL CASINO</h3><small>Sorteo de los 38 Animales</small></div><div class="ticket-body"><div class="ticket-emoji">' + selectedAnimal.emoji + '</div><div class="ticket-info"><p><strong>Jugador:</strong> ' + name + '</p><p><strong>N° Animal:</strong> ' + selectedAnimal.num + '</p><p><strong>Animal:</strong> ' + selectedAnimal.name + '</p><p><strong>Fecha:</strong> ' + new Date().toLocaleString('es-ES') + '</p><p><strong>ID Ticket:</strong> #' + Date.now().toString(36).toUpperCase() + '</p></div></div></div>';
+    const ticketHTML = '<div class="ticket"><div class="ticket-header"><h3>️ TICKET DEL CASINO</h3><small>Sorteo de los 38 Animales</small></div><div class="ticket-body"><div class="ticket-emoji">' + selectedAnimal.emoji + '</div><div class="ticket-info"><p><strong>Jugador:</strong> ' + name + '</p><p><strong>N° Animal:</strong> ' + selectedAnimal.num + '</p><p><strong>Animal:</strong> ' + selectedAnimal.name + '</p><p><strong>Fecha:</strong> ' + new Date().toLocaleString('es-ES') + '</p><p><strong>ID Ticket:</strong> #' + Date.now().toString(36).toUpperCase() + '</p></div></div></div>';
     document.getElementById('ticketArea').innerHTML = successHTML + ticketHTML;
     applyTwemoji(document.getElementById('ticketArea'));
     
     btn.textContent = '✅ REGISTRADO';
-    setTimeout(function() { closeModal(); }, 3500);
+    
+    // ✅ CORRECCIÓN: Forzar actualización del grid y la lista
+    setTimeout(function() { 
+      closeModal(); 
+      renderGrid();  // ← Esto faltaba
+    }, 3500);
   } catch (error) {
     alert("Error al guardar: " + error.message);
     btn.disabled = false; btn.textContent = '✅ ENVIAR';
