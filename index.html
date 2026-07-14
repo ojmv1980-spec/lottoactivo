@@ -1044,37 +1044,96 @@ function generateImageForMultiple(name, animalsList) {
 }
 
 async function generateWhatsAppList() {
-  if (!window.getDocs) { alert('Cargando datos...'); return; }
-  const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
-  const list = [];
-  querySnapshot.forEach(function(doc) { list.push(doc.data()); });
+  // 1. Obtener configuración del sorteo (con fallback seguro)
+  let fecha = 'Por definir';
+  let hora = 'Por definir';
+  let premio = 'Por definir';
   
+  if (window.getDoc && window.doc && window.db) {
+    try {
+      const docSnap = await window.getDoc(window.doc(window.db, "config", "sorteo_actual"));
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.fecha) fecha = data.fecha;
+        if (data.hora) hora = data.hora;
+        if (data.premio) premio = data.premio;
+      }
+    } catch (e) {
+      console.error("Error al obtener config:", e);
+    }
+  }
+
+  // 2. Obtener participantes (con fallback a datos locales si Firebase falla)
+  let list = [];
+  if (window.getDocs && window.collection && window.db) {
+    try {
+      const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
+      querySnapshot.forEach(function(doc) { list.push(doc.data()); });
+    } catch (e) {
+      console.error("Error al obtener participantes:", e);
+    }
+  }
+  
+  // Si no hay datos de Firebase, usar los locales en memoria
+  if (list.length === 0 && Object.keys(localParticipants).length > 0) {
+    list = Object.values(localParticipants);
+  }
+
+  // 3. Ordenar estrictamente (00, 0, 1, 2... 36)
   list.sort(function(a, b) { return sortNumbers(a.num, b.num); });
+
+  if (list.length === 0) { 
+    alert('⚠️ No hay participantes registrados aún.'); 
+    return; 
+  }
+
+  // 4. Construir el texto CON EL FORMATO ACORDADO
+  let text = '🎰 *CASINO DE ANIMALITOS - LOTTO ACTIVO* 🎰\n\n';
+  text += '📅 Fecha: ' + fecha + '\n';
+  text += '⏰ Hora: ' + hora + '\n';
+  text += '🏆 Premio: ' + premio + '\n\n';
+  text += '📋 *PARTICIPANTES:*\n\n';
   
-  if (list.length === 0) { alert('No hay participantes'); return; }
-  
-  let text = '🎰 *CASINO DE ANIMALITOS - LOTTO ACTIVO* 🎰\n\n *PARTICIPANTES:*\n\n';
   list.forEach(function(p) {
     text += p.emoji + ' *' + p.num + '* ' + p.animalName + ' - ' + p.name + '\n';
   });
+  
   text += '\n¡Buena suerte a todos! 🍀';
-  
+
+  // 5. Eliminar modal anterior si existe para evitar duplicados
+  const existingModal = document.querySelector('.whatsapp-modal-overlay');
+  if (existingModal) existingModal.remove();
+
+  // 6. Crear y mostrar el modal
   const modal = document.createElement('div');
-  modal.className = 'modal-overlay';
+  modal.className = 'modal-overlay whatsapp-modal-overlay';
   modal.style.display = 'flex';
-  modal.innerHTML = '<div class="modal" style="max-width: 600px;">' +
-    '<h2> LISTA PARA WHATSAPP</h2>' +
-    '<div class="whatsapp-list">' + text + '</div>' +
-    '<button class="btn btn-primary" onclick="copyToClipboard(this)"> COPIAR</button>' +
-    '<button class="btn btn-secondary" onclick="openWhatsApp(this)">💬 ENVIAR WHATSAPP</button>' +
-    '<button class="btn btn-secondary" onclick="this.closest(\'.modal-overlay\').remove()"> CERRAR</button>' +
-  '</div>';
-  
-  modal.querySelector('.btn-primary').dataset.text = text;
-  modal.querySelector('.btn-secondary').dataset.text = text;
+  modal.innerHTML = `
+    <div class="modal" style="max-width: 600px;">
+      <h2>📱 LISTA PARA WHATSAPP</h2>
+      <div class="whatsapp-list" style="max-height: 300px; overflow-y: auto; text-align: left; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin: 15px 0; white-space: pre-wrap; font-family: monospace; font-size: 0.9em;">${text}</div>
+      <button class="btn btn-primary" id="btnCopyWA">📋 COPIAR</button>
+      <button class="btn btn-secondary" id="btnSendWA">💬 ENVIAR WHATSAPP</button>
+      <button class="btn btn-secondary" onclick="this.closest('.modal-overlay').remove()">❌ CERRAR</button>
+    </div>
+  `;
   
   document.body.appendChild(modal);
-}
+
+  // 7. Asignar eventos a los botones de forma segura
+  document.getElementById('btnCopyWA').onclick = function() {
+    navigator.clipboard.writeText(text).then(function() { 
+      alert('✅ Lista copiada al portapapeles'); 
+    }).catch(function() {
+      alert('❌ Error al copiar. Intenta seleccionando el texto manualmente.');
+    });
+  };
+
+  document.getElementById('btnSendWA').onclick = function() {
+    const encoded = encodeURIComponent(text);
+    window.open('https://wa.me/?text=' + encoded, '_blank');
+  };
+ }
 
 function copyToClipboard(btn) {
   const text = btn.dataset.text;
