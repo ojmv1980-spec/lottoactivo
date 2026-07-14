@@ -1240,8 +1240,19 @@ document.getElementById('participantName').addEventListener('input', function(e)
 document.getElementById('participantName').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmParticipation(); });
 document.getElementById('adminPassword').addEventListener('keypress', function(e) { if (e.key === 'Enter') verifyAdminPassword(); });
 
-// ✅ MODIFICACIÓN 2: Inicializar el listener en lugar de renderGrid directo
-setupFirebaseListener();
+// ✅ SOLUCIÓN QUIRÚRGICA: Dibujar el grid inmediatamente (no depende de Firebase)
+renderGrid();
+
+// Luego, configurar el listener de Firebase para actualizaciones en tiempo real
+if (window.onSnapshot) {
+  setupFirebaseListener();
+} else {
+  // Fallback por si el módulo de Firebase tarda un instante más en cargarse
+  setTimeout(function() {
+    if (window.onSnapshot) setupFirebaseListener();
+  }, 500);
+}
+
 updateAdminUI();
 </script>
 
