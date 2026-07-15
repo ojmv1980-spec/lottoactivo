@@ -376,8 +376,8 @@
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  // ✅ MOD 1: Se agregó updateDoc a las importaciones
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAYi_2SJoCP4QmVLvAdtrwUphQEERv4ciY",
@@ -400,6 +400,8 @@
   window.onSnapshot = onSnapshot;
   window.setDoc = setDoc;
   window.getDoc = getDoc;
+  // ✅ MOD 2: Se expone updateDoc globalmente
+  window.updateDoc = updateDoc;
 
   if (typeof window.iniciarApp === 'function') {
     window.iniciarApp();
@@ -508,7 +510,6 @@ function openModal(animal) {
   document.getElementById('participantName').value = '';
   document.getElementById('ticketArea').innerHTML = '';
   
-  // ✅ FIX 1: Reiniciar el botón a su estado original cada vez que se abre el modal
   const btn = document.querySelector('#modalOverlay .btn-primary');
   if (btn) {
     btn.disabled = false;
@@ -675,10 +676,13 @@ async function renderParticipantsList() {
   
   let html = '';
   list.forEach(function(p) {
+    // ✅ MOD 3: Se agregó el botón "✏️ Editar" al principio de las acciones
     html += '<div class="participant-item"><div class="participant-info">' +
       '<div class="participant-number">' + p.num + '</div><div class="participant-emoji">' + p.emoji + '</div>' +
       '<div class="participant-animal">' + p.animalName + '</div><div class="participant-name">' + p.name + '</div></div>' +
-      '<div class="participant-actions"><button class="btn-small btn-image" onclick="generateParticipantImage(\'' + p.id + '\', \'' + p.num + '\', \'' + p.name + '\', \'' + p.emoji + '\', \'' + p.animalName + '\')">🖼️ Imagen</button>' +
+      '<div class="participant-actions">' +
+      '<button class="btn-small btn-edit" onclick="editParticipant(\'' + p.id + '\', \'' + p.num + '\', \'' + p.name + '\', \'' + p.emoji + '\', \'' + p.animalName + '\')">✏️ Editar</button>' +
+      '<button class="btn-small btn-image" onclick="generateParticipantImage(\'' + p.id + '\', \'' + p.num + '\', \'' + p.name + '\', \'' + p.emoji + '\', \'' + p.animalName + '\')">🖼️ Imagen</button>' +
       '<button class="btn-small btn-delete" onclick="deleteParticipant(\'' + p.id + '\', \'' + p.num + '\')">🗑️ Eliminar</button></div></div>';
   });
   container.innerHTML = html;
@@ -689,6 +693,56 @@ async function deleteParticipant(id, num) {
   if (confirm('¿Eliminar a este participante del animal ' + num + '? El animal quedará disponible nuevamente de forma inmediata.')) {
     try { await window.deleteDoc(window.doc(window.db, "participantes", id)); renderParticipantsList(); } 
     catch (error) { alert("Error al eliminar: " + error.message); }
+  }
+}
+
+// ✅ MOD 4: Función completa para Editar Nombre o Animal
+async function editParticipant(id, currentNum, currentName, currentEmoji, currentAnimalName) {
+  const choice = confirm("¿Qué deseas editar para " + currentName + " (" + currentNum + " " + currentAnimalName + ")?\n\n[ ACEPTAR ] = Cambiar NOMBRE\n[ CANCELAR ] = Cambiar ANIMAL");
+
+  if (choice) {
+    // Cambiar nombre (el prompt muestra el nombre actual por defecto)
+    const newName = prompt("Escribe el nuevo nombre:", currentName);
+    if (newName !== null && newName.trim() !== "") {
+      const finalName = newName.trim().toUpperCase();
+      try {
+        await window.updateDoc(window.doc(window.db, "participantes", id), { name: finalName });
+        alert("✅ Nombre actualizado correctamente.");
+        renderParticipantsList();
+      } catch (error) {
+        alert("❌ Error al actualizar: " + error.message);
+      }
+    }
+  } else {
+    // Cambiar animal
+    const newNum = prompt("Escribe el NÚMERO del nuevo animal (ej: 00, 16, 36):", "");
+    if (newNum !== null && newNum.trim() !== "") {
+      const finalNum = newNum.trim();
+      const selectedAnimal = animals.find(a => a.num === finalNum);
+
+      if (!selectedAnimal) {
+        alert("❌ Número de animal no válido. Debe ser entre 00 y 36.");
+        return;
+      }
+
+      const isTakenNow = Object.values(localParticipants).some(p => p.num === finalNum);
+      if (isTakenNow) {
+        alert("⚠️ Ese animal ya está tomado por otra persona. Intenta con otro número.");
+        return;
+      }
+
+      try {
+        await window.updateDoc(window.doc(window.db, "participantes", id), {
+          num: selectedAnimal.num,
+          animalName: selectedAnimal.name,
+          emoji: selectedAnimal.emoji
+        });
+        alert("✅ Animal cambiado a " + selectedAnimal.num + " " + selectedAnimal.name + " correctamente.");
+        renderParticipantsList();
+      } catch (error) {
+        alert("❌ Error al actualizar: " + error.message);
+      }
+    }
   }
 }
 
@@ -742,18 +796,14 @@ function generateImageForMultiple(name, animalsList) {
   });
 }
 
-// ✅ FIX 2: Función de WhatsApp blindada que consulta Firebase directamente para garantizar que siempre funcione
 async function generateWhatsAppList() {
   console.log("📱 [WhatsApp] Iniciando generación...");
-  
   try {
-    // Nivel 1: Intentar obtener datos de Firebase
     let fecha = 'Por definir', hora = 'Por definir', premio = 'Por definir';
     let list = [];
     
     try {
       if (window.db && window.getDoc) {
-        console.log("📱 [WhatsApp] Consultando configuración...");
         const docSnap = await window.getDoc(window.doc(window.db, "config", "sorteo_actual"));
         if (docSnap.exists()) {
           const data = docSnap.data();
@@ -762,135 +812,70 @@ async function generateWhatsAppList() {
           if (data.premio) premio = data.premio;
         }
       }
-    } catch (e) {
-      console.warn("⚠️ [WhatsApp] Error al obtener config:", e);
-    }
+    } catch (e) { console.warn("⚠️ [WhatsApp] Error al obtener config:", e); }
 
     try {
       if (window.db && window.getDocs) {
-        console.log("📱 [WhatsApp] Consultando participantes...");
         const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
-        querySnapshot.forEach(function(doc) { 
-          list.push(doc.data()); 
-        });
-        console.log("📱 [WhatsApp] Participantes de Firebase:", list.length);
+        querySnapshot.forEach(function(doc) { list.push(doc.data()); });
       }
-    } catch (e) {
-      console.warn("⚠️ [WhatsApp] Error al obtener participantes:", e);
-    }
+    } catch (e) { console.warn("⚠️ [WhatsApp] Error al obtener participantes:", e); }
     
-    // Nivel 2: Fallback a datos locales
-    if (list.length === 0) {
-      console.log("📱 [WhatsApp] Usando datos locales...");
-      list = Object.values(localParticipants);
-    }
-
+    if (list.length === 0) { list = Object.values(localParticipants); }
     list.sort(function(a, b) { return sortNumbers(a.num, b.num); });
 
-    if (list.length === 0) { 
-      alert('⚠️ No hay participantes registrados aún.'); 
-      return; 
-    }
+    if (list.length === 0) { alert('⚠️ No hay participantes registrados aún.'); return; }
 
-    // Construir el texto
     let text = ' *CASINO DE ANIMALITOS - LOTTO ACTIVO* 🎰\n\n';
     text += '📅 Fecha: ' + fecha + '\n';
     text += ' Hora: ' + hora + '\n';
     text += '🏆 Premio: ' + premio + '\n\n';
     text += '📋 *PARTICIPANTES:*\n\n';
-    
-    list.forEach(function(p) { 
-      text += p.emoji + ' *' + p.num + '* ' + p.animalName + ' - ' + p.name + '\n'; 
-    });
-    
+    list.forEach(function(p) { text += p.emoji + ' *' + p.num + '* ' + p.animalName + ' - ' + p.name + '\n'; });
     text += '\n¡Buena suerte a todos! 🍀';
-    
-    console.log("📱 [WhatsApp] Texto generado, longitud:", text.length);
 
-    // Nivel 3: Intentar crear el modal
-    try {
-      const existingModal = document.querySelector('.whatsapp-modal-overlay');
-      if (existingModal) existingModal.remove();
+    const existingModal = document.querySelector('.whatsapp-modal-overlay');
+    if (existingModal) existingModal.remove();
 
-      const modal = document.createElement('div');
-      modal.className = 'modal-overlay whatsapp-modal-overlay';
-      modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;justify-content:center;align-items:center;';
-      
-      modal.innerHTML = '<div style="background:#1a0a2e;border:4px solid #ffd700;border-radius:20px;padding:30px;max-width:600px;width:90%;text-align:center;">' +
-        '<h2 style="color:#ffd700;margin-bottom:15px;">📱 LISTA PARA WHATSAPP</h2>' +
-        '<div style="max-height:300px;overflow-y:auto;text-align:left;background:rgba(0,0,0,0.5);padding:15px;border-radius:10px;margin:15px 0;white-space:pre-wrap;font-family:monospace;font-size:0.9em;color:#fff;">' + text + '</div>' +
-        '<button id="btnCopyWA" style="padding:15px 35px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;margin:8px;font-weight:bold;background:#ffd700;color:#000;">📋 COPIAR</button>' +
-        '<button id="btnSendWA" style="padding:15px 35px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;margin:8px;font-weight:bold;background:#333;color:#fff;">💬 ENVIAR WHATSAPP</button>' +
-        '<button id="btnCloseWA" style="padding:15px 35px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;margin:8px;font-weight:bold;background:#666;color:#fff;">❌ CERRAR</button>' +
-      '</div>';
-      
-      document.body.appendChild(modal);
-      console.log("✅ [WhatsApp] Modal creado exitosamente");
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay whatsapp-modal-overlay';
+    modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;justify-content:center;align-items:center;';
+    modal.innerHTML = '<div style="background:#1a0a2e;border:4px solid #ffd700;border-radius:20px;padding:30px;max-width:600px;width:90%;text-align:center;">' +
+      '<h2 style="color:#ffd700;margin-bottom:15px;">📱 LISTA PARA WHATSAPP</h2>' +
+      '<div style="max-height:300px;overflow-y:auto;text-align:left;background:rgba(0,0,0,0.5);padding:15px;border-radius:10px;margin:15px 0;white-space:pre-wrap;font-family:monospace;font-size:0.9em;color:#fff;">' + text + '</div>' +
+      '<button id="btnCopyWA" style="padding:15px 35px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;margin:8px;font-weight:bold;background:#ffd700;color:#000;">📋 COPIAR</button>' +
+      '<button id="btnSendWA" style="padding:15px 35px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;margin:8px;font-weight:bold;background:#333;color:#fff;">💬 ENVIAR WHATSAPP</button>' +
+      '<button id="btnCloseWA" style="padding:15px 35px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;margin:8px;font-weight:bold;background:#666;color:#fff;">❌ CERRAR</button>' +
+    '</div>';
+    document.body.appendChild(modal);
 
-      // Asignar eventos
-      document.getElementById('btnCopyWA').onclick = function() {
-        // Nivel 4: Copiar al portapapeles con múltiples métodos
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(function() { 
-            alert('✅ Lista copiada al portapapeles'); 
-          }).catch(function() {
-            fallbackCopy(text);
-          });
-        } else {
-          fallbackCopy(text);
-        }
-      };
-      
-      document.getElementById('btnSendWA').onclick = function() {
-        const encoded = encodeURIComponent(text);
-        const url = 'https://wa.me/?text=' + encoded;
-        console.log("📱 [WhatsApp] Abriendo:", url);
-        window.open(url, '_blank');
-      };
-      
-      document.getElementById('btnCloseWA').onclick = function() {
-        modal.remove();
-      };
-      
-    } catch (modalError) {
-      console.error("❌ [WhatsApp] Error al crear modal:", modalError);
-      // Nivel 5: Si el modal falla, mostrar el texto en un prompt
-      fallbackShow(text);
-    }
-    
+    document.getElementById('btnCopyWA').onclick = function() {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() { alert('✅ Lista copiada al portapapeles'); }).catch(function() { fallbackCopy(text); });
+      } else { fallbackCopy(text); }
+    };
+    document.getElementById('btnSendWA').onclick = function() {
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    };
+    document.getElementById('btnCloseWA').onclick = function() { modal.remove(); };
   } catch (error) {
     console.error("❌ [WhatsApp] Error grave:", error);
     alert("Error al generar la lista: " + error.message);
   }
 }
 
-// Función auxiliar para copiar texto (fallback para navegadores antiguos)
 function fallbackCopy(text) {
   const textArea = document.createElement("textarea");
-  textArea.value = text;
-  textArea.style.position = "fixed";
-  textArea.style.left = "-9999px";
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
-  
-  try {
-    document.execCommand('copy');
-    alert('✅ Lista copiada al portapapeles');
-  } catch (err) {
-    console.error("Error al copiar:", err);
-    fallbackShow(text);
-  }
-  
+  textArea.value = text; textArea.style.position = "fixed"; textArea.style.left = "-9999px";
+  document.body.appendChild(textArea); textArea.focus(); textArea.select();
+  try { document.execCommand('copy'); alert('✅ Lista copiada al portapapeles'); } 
+  catch (err) { console.error("Error al copiar:", err); fallbackShow(text); }
   document.body.removeChild(textArea);
 }
 
-// Función auxiliar para mostrar el texto si todo lo demás falla
 function fallbackShow(text) {
   const userChoice = confirm("No se pudo generar la lista visualmente.\n\n¿Deseas ver el texto en una ventana para copiarlo manualmente?\n\n(Aceptar = Ver texto | Cancelar = Cerrar)");
-  if (userChoice) {
-    const result = prompt("Copia el texto de abajo (Ctrl+C o mantén presionado y Copiar):\n\n", text);
-  }
+  if (userChoice) { prompt("Copia el texto de abajo (Ctrl+C o mantén presionado y Copiar):\n\n", text); }
 }
 
 function renderMiniGrid() {
