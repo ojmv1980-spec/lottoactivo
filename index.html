@@ -401,7 +401,6 @@
   window.setDoc = setDoc;
   window.getDoc = getDoc;
 
-  // ✅ FIX: Llamar a la inicialización SOLO cuando Firebase esté 100% listo
   if (typeof window.iniciarApp === 'function') {
     window.iniciarApp();
   }
@@ -508,6 +507,14 @@ function openModal(animal) {
   document.getElementById('previewText').textContent = 'Animal N° ' + animal.num + ' - ' + animal.name;
   document.getElementById('participantName').value = '';
   document.getElementById('ticketArea').innerHTML = '';
+  
+  // ✅ FIX 1: Reiniciar el botón a su estado original cada vez que se abre el modal
+  const btn = document.querySelector('#modalOverlay .btn-primary');
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = '✅ ENVIAR';
+  }
+
   document.getElementById('modalOverlay').classList.add('active');
   setTimeout(function() { document.getElementById('participantName').focus(); }, 100);
   applyTwemoji(document.getElementById('previewEmoji'));
@@ -735,28 +742,38 @@ function generateImageForMultiple(name, animalsList) {
   });
 }
 
+// ✅ FIX 2: Función de WhatsApp blindada que consulta Firebase directamente para garantizar que siempre funcione
 async function generateWhatsAppList() {
-  console.log("📱 Iniciando generación de lista WhatsApp...");
   try {
     let fecha = 'Por definir', hora = 'Por definir', premio = 'Por definir';
-    if (window.getDoc && window.doc && window.db) {
-      try {
-        const docSnap = await window.getDoc(window.doc(window.db, "config", "sorteo_actual"));
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          if (data.fecha) fecha = data.fecha;
-          if (data.hora) hora = data.hora;
-          if (data.premio) premio = data.premio;
-        }
-      } catch (e) { console.warn("Config no disponible, usando valores por defecto", e); }
+    if (window.getDoc && window.db) {
+      const docSnap = await window.getDoc(window.doc(window.db, "config", "sorteo_actual"));
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.fecha) fecha = data.fecha;
+        if (data.hora) hora = data.hora;
+        if (data.premio) premio = data.premio;
+      }
     }
 
-    // ✅ FIX: Usar localParticipants directamente para que sea INSTANTÁNEO
-    let list = Object.values(localParticipants);
-    console.log("Total participantes a mostrar:", list.length);
+    let list = [];
+    // Consulta directa a Firebase para garantizar datos frescos
+    if (window.getDocs && window.db) {
+      const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
+      querySnapshot.forEach(function(doc) { list.push(doc.data()); });
+    }
+    
+    // Fallback a local si falla la red
+    if (list.length === 0) {
+      list = Object.values(localParticipants);
+    }
 
-    if (list.length === 0) { alert('⚠️ No hay participantes registrados aún.'); return; }
     list.sort(function(a, b) { return sortNumbers(a.num, b.num); });
+
+    if (list.length === 0) { 
+      alert('⚠️ No hay participantes registrados aún.'); 
+      return; 
+    }
 
     let text = '🎰 *CASINO DE ANIMALITOS - LOTTO ACTIVO* 🎰\n\n';
     text += '📅 Fecha: ' + fecha + '\n⏰ Hora: ' + hora + '\n🏆 Premio: ' + premio + '\n\n📋 *PARTICIPANTES:*\n\n';
@@ -780,13 +797,13 @@ async function generateWhatsAppList() {
 
     document.getElementById('btnCopyWA').onclick = function() {
       navigator.clipboard.writeText(text).then(function() { alert('✅ Lista copiada al portapapeles'); })
-      .catch(function() { alert('❌ Error al copiar. Intenta seleccionando el texto manualmente.'); });
+      .catch(function() { alert('❌ Error al copiar.'); });
     };
     document.getElementById('btnSendWA').onclick = function() {
       window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
     };
   } catch (error) {
-    console.error("Error grave en generateWhatsAppList:", error);
+    console.error("Error en WhatsApp:", error);
     alert("Error al generar la lista: " + error.message);
   }
 }
@@ -903,7 +920,6 @@ document.getElementById('participantName').addEventListener('input', function(e)
 document.getElementById('participantName').addEventListener('keypress', function(e) { if (e.key === 'Enter') confirmParticipation(); });
 document.getElementById('adminPassword').addEventListener('keypress', function(e) { if (e.key === 'Enter') verifyAdminPassword(); });
 
-// ✅ FIX: Definimos la función globalmente para que el módulo de Firebase la llame cuando esté 100% listo
 window.iniciarApp = function() {
   setupFirebaseListener();
   updateAdminUI();
