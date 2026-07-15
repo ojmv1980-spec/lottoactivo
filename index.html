@@ -376,7 +376,8 @@
 </div>
 
 <script type="module">
-  // ✅ MOD 1: Se agregó updateDoc a las importaciones
+  // ✅ CORREGIDO: Se restauró initializeApp en la importación
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -400,7 +401,6 @@
   window.onSnapshot = onSnapshot;
   window.setDoc = setDoc;
   window.getDoc = getDoc;
-  // ✅ MOD 2: Se expone updateDoc globalmente
   window.updateDoc = updateDoc;
 
   if (typeof window.iniciarApp === 'function') {
@@ -676,7 +676,6 @@ async function renderParticipantsList() {
   
   let html = '';
   list.forEach(function(p) {
-    // ✅ MOD 3: Se agregó el botón "✏️ Editar" al principio de las acciones
     html += '<div class="participant-item"><div class="participant-info">' +
       '<div class="participant-number">' + p.num + '</div><div class="participant-emoji">' + p.emoji + '</div>' +
       '<div class="participant-animal">' + p.animalName + '</div><div class="participant-name">' + p.name + '</div></div>' +
@@ -696,12 +695,10 @@ async function deleteParticipant(id, num) {
   }
 }
 
-// ✅ MOD 4: Función completa para Editar Nombre o Animal
 async function editParticipant(id, currentNum, currentName, currentEmoji, currentAnimalName) {
   const choice = confirm("¿Qué deseas editar para " + currentName + " (" + currentNum + " " + currentAnimalName + ")?\n\n[ ACEPTAR ] = Cambiar NOMBRE\n[ CANCELAR ] = Cambiar ANIMAL");
 
   if (choice) {
-    // Cambiar nombre (el prompt muestra el nombre actual por defecto)
     const newName = prompt("Escribe el nuevo nombre:", currentName);
     if (newName !== null && newName.trim() !== "") {
       const finalName = newName.trim().toUpperCase();
@@ -714,7 +711,6 @@ async function editParticipant(id, currentNum, currentName, currentEmoji, curren
       }
     }
   } else {
-    // Cambiar animal
     const newNum = prompt("Escribe el NÚMERO del nuevo animal (ej: 00, 16, 36):", "");
     if (newNum !== null && newNum.trim() !== "") {
       const finalNum = newNum.trim();
