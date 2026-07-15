@@ -744,27 +744,44 @@ function generateImageForMultiple(name, animalsList) {
 
 // ✅ FIX 2: Función de WhatsApp blindada que consulta Firebase directamente para garantizar que siempre funcione
 async function generateWhatsAppList() {
+  console.log("📱 [WhatsApp] Iniciando generación...");
+  
   try {
+    // Nivel 1: Intentar obtener datos de Firebase
     let fecha = 'Por definir', hora = 'Por definir', premio = 'Por definir';
-    if (window.getDoc && window.db) {
-      const docSnap = await window.getDoc(window.doc(window.db, "config", "sorteo_actual"));
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        if (data.fecha) fecha = data.fecha;
-        if (data.hora) hora = data.hora;
-        if (data.premio) premio = data.premio;
+    let list = [];
+    
+    try {
+      if (window.db && window.getDoc) {
+        console.log("📱 [WhatsApp] Consultando configuración...");
+        const docSnap = await window.getDoc(window.doc(window.db, "config", "sorteo_actual"));
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.fecha) fecha = data.fecha;
+          if (data.hora) hora = data.hora;
+          if (data.premio) premio = data.premio;
+        }
       }
+    } catch (e) {
+      console.warn("⚠️ [WhatsApp] Error al obtener config:", e);
     }
 
-    let list = [];
-    // Consulta directa a Firebase para garantizar datos frescos
-    if (window.getDocs && window.db) {
-      const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
-      querySnapshot.forEach(function(doc) { list.push(doc.data()); });
+    try {
+      if (window.db && window.getDocs) {
+        console.log("📱 [WhatsApp] Consultando participantes...");
+        const querySnapshot = await window.getDocs(window.collection(window.db, "participantes"));
+        querySnapshot.forEach(function(doc) { 
+          list.push(doc.data()); 
+        });
+        console.log("📱 [WhatsApp] Participantes de Firebase:", list.length);
+      }
+    } catch (e) {
+      console.warn("⚠️ [WhatsApp] Error al obtener participantes:", e);
     }
     
-    // Fallback a local si falla la red
+    // Nivel 2: Fallback a datos locales
     if (list.length === 0) {
+      console.log("📱 [WhatsApp] Usando datos locales...");
       list = Object.values(localParticipants);
     }
 
@@ -775,36 +792,104 @@ async function generateWhatsAppList() {
       return; 
     }
 
-    let text = '🎰 *CASINO DE ANIMALITOS - LOTTO ACTIVO* 🎰\n\n';
-    text += '📅 Fecha: ' + fecha + '\n⏰ Hora: ' + hora + '\n🏆 Premio: ' + premio + '\n\n📋 *PARTICIPANTES:*\n\n';
-    list.forEach(function(p) { text += p.emoji + ' *' + p.num + '* ' + p.animalName + ' - ' + p.name + '\n'; });
-    text += '\n¡Buena suerte a todos! 🍀';
-
-    const existingModal = document.querySelector('.whatsapp-modal-overlay');
-    if (existingModal) existingModal.remove();
-
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay whatsapp-modal-overlay';
-    modal.style.display = 'flex';
-    modal.innerHTML = '<div class="modal" style="max-width: 600px;">' +
-      '<h2>📱 LISTA PARA WHATSAPP</h2>' +
-      '<div class="whatsapp-list" style="max-height: 300px; overflow-y: auto; text-align: left; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; margin: 15px 0; white-space: pre-wrap; font-family: monospace; font-size: 0.9em;">' + text + '</div>' +
-      '<button class="btn btn-primary" id="btnCopyWA">📋 COPIAR</button>' +
-      '<button class="btn btn-secondary" id="btnSendWA">💬 ENVIAR WHATSAPP</button>' +
-      '<button class="btn btn-secondary" onclick="this.closest(\'.modal-overlay\').remove()">❌ CERRAR</button></div>';
+    // Construir el texto
+    let text = ' *CASINO DE ANIMALITOS - LOTTO ACTIVO* 🎰\n\n';
+    text += '📅 Fecha: ' + fecha + '\n';
+    text += ' Hora: ' + hora + '\n';
+    text += '🏆 Premio: ' + premio + '\n\n';
+    text += '📋 *PARTICIPANTES:*\n\n';
     
-    document.body.appendChild(modal);
+    list.forEach(function(p) { 
+      text += p.emoji + ' *' + p.num + '* ' + p.animalName + ' - ' + p.name + '\n'; 
+    });
+    
+    text += '\n¡Buena suerte a todos! 🍀';
+    
+    console.log("📱 [WhatsApp] Texto generado, longitud:", text.length);
 
-    document.getElementById('btnCopyWA').onclick = function() {
-      navigator.clipboard.writeText(text).then(function() { alert('✅ Lista copiada al portapapeles'); })
-      .catch(function() { alert('❌ Error al copiar.'); });
-    };
-    document.getElementById('btnSendWA').onclick = function() {
-      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
-    };
+    // Nivel 3: Intentar crear el modal
+    try {
+      const existingModal = document.querySelector('.whatsapp-modal-overlay');
+      if (existingModal) existingModal.remove();
+
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay whatsapp-modal-overlay';
+      modal.style.cssText = 'display:flex;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;justify-content:center;align-items:center;';
+      
+      modal.innerHTML = '<div style="background:#1a0a2e;border:4px solid #ffd700;border-radius:20px;padding:30px;max-width:600px;width:90%;text-align:center;">' +
+        '<h2 style="color:#ffd700;margin-bottom:15px;">📱 LISTA PARA WHATSAPP</h2>' +
+        '<div style="max-height:300px;overflow-y:auto;text-align:left;background:rgba(0,0,0,0.5);padding:15px;border-radius:10px;margin:15px 0;white-space:pre-wrap;font-family:monospace;font-size:0.9em;color:#fff;">' + text + '</div>' +
+        '<button id="btnCopyWA" style="padding:15px 35px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;margin:8px;font-weight:bold;background:#ffd700;color:#000;">📋 COPIAR</button>' +
+        '<button id="btnSendWA" style="padding:15px 35px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;margin:8px;font-weight:bold;background:#333;color:#fff;">💬 ENVIAR WHATSAPP</button>' +
+        '<button id="btnCloseWA" style="padding:15px 35px;font-size:1.2em;border:none;border-radius:10px;cursor:pointer;margin:8px;font-weight:bold;background:#666;color:#fff;">❌ CERRAR</button>' +
+      '</div>';
+      
+      document.body.appendChild(modal);
+      console.log("✅ [WhatsApp] Modal creado exitosamente");
+
+      // Asignar eventos
+      document.getElementById('btnCopyWA').onclick = function() {
+        // Nivel 4: Copiar al portapapeles con múltiples métodos
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function() { 
+            alert('✅ Lista copiada al portapapeles'); 
+          }).catch(function() {
+            fallbackCopy(text);
+          });
+        } else {
+          fallbackCopy(text);
+        }
+      };
+      
+      document.getElementById('btnSendWA').onclick = function() {
+        const encoded = encodeURIComponent(text);
+        const url = 'https://wa.me/?text=' + encoded;
+        console.log("📱 [WhatsApp] Abriendo:", url);
+        window.open(url, '_blank');
+      };
+      
+      document.getElementById('btnCloseWA').onclick = function() {
+        modal.remove();
+      };
+      
+    } catch (modalError) {
+      console.error("❌ [WhatsApp] Error al crear modal:", modalError);
+      // Nivel 5: Si el modal falla, mostrar el texto en un prompt
+      fallbackShow(text);
+    }
+    
   } catch (error) {
-    console.error("Error en WhatsApp:", error);
+    console.error("❌ [WhatsApp] Error grave:", error);
     alert("Error al generar la lista: " + error.message);
+  }
+}
+
+// Función auxiliar para copiar texto (fallback para navegadores antiguos)
+function fallbackCopy(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.position = "fixed";
+  textArea.style.left = "-9999px";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  
+  try {
+    document.execCommand('copy');
+    alert('✅ Lista copiada al portapapeles');
+  } catch (err) {
+    console.error("Error al copiar:", err);
+    fallbackShow(text);
+  }
+  
+  document.body.removeChild(textArea);
+}
+
+// Función auxiliar para mostrar el texto si todo lo demás falla
+function fallbackShow(text) {
+  const userChoice = confirm("No se pudo generar la lista visualmente.\n\n¿Deseas ver el texto en una ventana para copiarlo manualmente?\n\n(Aceptar = Ver texto | Cancelar = Cerrar)");
+  if (userChoice) {
+    const result = prompt("Copia el texto de abajo (Ctrl+C o mantén presionado y Copiar):\n\n", text);
   }
 }
 
